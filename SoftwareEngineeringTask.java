@@ -1,3 +1,4 @@
+
 /*Lauren's update*/
 import java.util.*;
 import java.lang.*;
@@ -34,7 +35,23 @@ public class SoftwareEngineeringTask
       readFile(TRANSACTION_HISTORY);
       readFile(INVENTORY);
       readFile(EMPLOYEE);
-            
+
+      // test print the array (TRANSACTIONS)
+      for(int rows = 0; rows < MAX_SIZE; rows++){
+         for(int cols = 0; cols < TRANSACTION_PARAMETERS; cols++){
+            System.out.print(arrayTransactions[rows][cols] + " ");
+            }
+            System.out.println("new transaction\n");
+      }
+      
+      // test print the array (EMPLOYEES)
+      for(int rows = 0; rows < MAX_SIZE; rows++){
+         for(int cols = 0; cols < EMPLOYEE_PARAMETERS; cols++){
+            System.out.print(arrayEmployees[rows][cols] + " ");
+            }
+            System.out.println("new employee\n");
+      }
+      
       // Creating Scanner
       Scanner sc = new Scanner(System.in);
 
