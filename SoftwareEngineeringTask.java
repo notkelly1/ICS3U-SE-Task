@@ -268,7 +268,7 @@ public class SoftwareEngineeringTask
    public static void writeFile(String fileName)
    {
       // Variable Declaration
-      int numLines;
+      int numLines = 0;
       try
       {
          BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
@@ -286,7 +286,28 @@ public class SoftwareEngineeringTask
             numLines = EMPLOYEE_PARAMETERS;
          }
          // loop through the array
-         
+         // For every employee/item/checkout         
+         for(int rows = 0; rows < MAX_SIZE; rows ++){
+            // loop through the different parameters associated with it (identification + parameters)
+            for(int cols = 0; cols < numLines; cols ++){
+               // save everything in a new line
+               if(fileName.equals(TRANSACTION_HISTORY))
+               {
+                  // if this breaks put all the "\n" to the front(i.e. "\n" + arrayTransactions[rows][cols])
+                  out.write(arrayTransactions[rows][cols] + "\n");
+               }
+               else if(fileName.equals(INVENTORY))
+               {
+                  out.write(arrayEmployees[rows][cols]+ "\n");
+               }
+               else if(fileName.equals(EMPLOYEE))
+               {
+                  out.write(arrayInventory[rows][cols] + "\n");
+               }            
+            }
+            out.write("***\n");
+            // write *** to seperate for new employee/item/checkout
+         }
       }
       catch(IOException e)
       {
