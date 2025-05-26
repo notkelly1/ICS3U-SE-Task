@@ -27,7 +27,7 @@ public class SoftwareEngineeringTask
       // Variable Declaration
       String employeeID = "";
       String employeePIN = "";
-      int choice = 0;
+      String choice = "";
       int loginResult = 0;
       boolean isValid;
       
@@ -42,6 +42,14 @@ public class SoftwareEngineeringTask
             System.out.print(arrayTransactions[rows][cols] + " ");
             }
             System.out.println("new transaction\n");
+      } 
+      
+      // test print the array (INVENTORY)
+      for(int rows = 0; rows < MAX_SIZE; rows++){
+         for(int cols = 0; cols < INVENTORY_PARAMETERS; cols++){
+            System.out.print(arrayInventory[rows][cols] + " ");
+            }
+            System.out.println("new item\n");
       }
       
       // test print the array (EMPLOYEES)
@@ -102,18 +110,21 @@ public class SoftwareEngineeringTask
             {
                System.out.println("Login successful (employee).");
                System.out.println("Select a number:\n1. Add Inventory\n2. Update Inventory\n3. Delete Inventory\n4. Check Inventory\n5. List all items\n6. List item\n7. Checkout");
-               choice = sc.nextInt();
-               /*switch (choice)
+               choice = sc.nextLine();
+               //sc.nextLine();
+               switch (choice)
                {
-                  case 1:
-                     
-                     addInventory(String codeUPC);
+                  case "1":
+                     //sc.nextLine();
+                     System.out.println("Enter an 8 digit UPC Code");                     
+                     addInventory(sc.nextLine());
                      break;
                      
-                  case 2:
+                  case "2":
                   
-                     updateInventory(int specificTransaction);
-                     break;
+                     System.out.println("Enter an 8 digit UPC Code");  
+                     updateInventory(sc.nextLine());
+                     break; /*
                      
                   case 3:
                   
@@ -138,14 +149,14 @@ public class SoftwareEngineeringTask
                   case 7:
                   
                      checkOut(String upc);
-                     break;
-               }*/
+                     break;*/
+               }
             }
             else if (loginResult == -1)
             {
                System.out.println("Login successful (admin).");
                System.out.println("Select a number:\n1. Add Inventory\n2. Update Inventory\n3. Delete Inventory\n4. Check Inventory\n5. List all items\n6. List item\n7. Checkout\n8. Add an employee\n9. Edit an employee's details\n10. Activate/Deactivate an employee\n11. View all transactions\n12. View a transaction by transaction number");
-               choice = sc.nextInt();
+               choice = sc.nextLine();
                /*switch (choice)
                {
                   case 1:
@@ -207,8 +218,37 @@ public class SoftwareEngineeringTask
                   
                      viewTransactions(int specificTransaction);
                      break;
-               }*/ 
-            }                   
+               }*/
+            }
+            
+            // FileWriter method used to update the file after all changes are mad               
+               writeFile(TRANSACTION_HISTORY);
+               writeFile(INVENTORY);
+               writeFile(EMPLOYEE);
+               
+               // test print the array (TRANSACTIONS)
+               for(int rows = 0; rows < MAX_SIZE; rows++){
+                  for(int cols = 0; cols < TRANSACTION_PARAMETERS; cols++){
+                     System.out.print(arrayTransactions[rows][cols] + " ");
+                     }
+                     System.out.println("new transaction\n");
+               } 
+               
+               // test print the array (INVENTORY)
+               for(int rows = 0; rows < MAX_SIZE; rows++){
+                  for(int cols = 0; cols < INVENTORY_PARAMETERS; cols++){
+                     System.out.print(arrayInventory[rows][cols] + " ");
+                     }
+                     System.out.println("new item\n");
+               }
+               
+               // test print the array (EMPLOYEES)
+               for(int rows = 0; rows < MAX_SIZE; rows++){
+                  for(int cols = 0; cols < EMPLOYEE_PARAMETERS; cols++){
+                     System.out.print(arrayEmployees[rows][cols] + " ");
+                     }
+                     System.out.println("new employee\n");
+               }                   
          }      
       }
    }  
@@ -296,11 +336,11 @@ public class SoftwareEngineeringTask
                   // if this breaks put all the "\n" to the front(i.e. "\n" + arrayTransactions[rows][cols])
                   out.write(arrayTransactions[rows][cols] + "\n");
                }
-               else if(fileName.equals(INVENTORY))
+               else if(fileName.equals(EMPLOYEE))
                {
                   out.write(arrayEmployees[rows][cols]+ "\n");
                }
-               else if(fileName.equals(EMPLOYEE))
+               else if(fileName.equals(INVENTORY))
                {
                   out.write(arrayInventory[rows][cols] + "\n");
                }            
@@ -440,14 +480,27 @@ public class SoftwareEngineeringTask
    
    /*
    Name: addInventory
-   Return Type: void
+   Return Type: Boolean
+   Returns: true if the UPC exists, false if UPC doesn't.
    Parameters: String codeUPC
    Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it doesn’t match, the user will be prompted to enter the name, price, and quantity if the UPC code does not match anything in the current inventory. This will loop until Q is pressed to return to the main menu.
    Change:
    */
-   public static void addInventory(String codeUPC)
+   public static boolean addInventory(String codeUPC)
    {
-   
+      // Constant Declaration
+      final int UPC_INDEX = 1;
+      
+      // check the array for codeUPC
+      for(int rows = 0; rows < MAX_SIZE; rows++){
+         if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
+            // check (delete later)
+            System.out.print("UPC code exists in array!");
+            // once the return is reached, the rest of the method doesn't run.
+            return true; 
+         }
+      }
+      return false;
    }
    
    /*
@@ -457,9 +510,41 @@ public class SoftwareEngineeringTask
    Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it matches, then it will prompt the user to enter the name of the item, current price, and current quantity, then prompt for new price and quantity. This will loop until Q is pressed to return to the main menu.
    Change:
    */
-   public static void updateInventory(int specificTransaction)
+   public static void updateInventory(String codeUPC) 
    {
-   
+      // Constant Declaration
+      final int NAME_INDEX = 0;
+      final int UPC_INDEX = 1;
+      final int PRICE_INDEX = 2;
+      final int QTY_INDEX = 3;
+      
+      // Creating Scanner
+      Scanner sc = new Scanner(System.in);
+      
+      // check the array for codeUPC
+      for(int rows = 0; rows < MAX_SIZE; rows++){
+         if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
+            // print the name, current price & qty of item
+            System.out.printf("The item name is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]);
+            
+            // prompt user for new price of the item
+            System.out.print("What is the new price of the item?: ");  
+            // update the appropriate array indexwith the next keyboard input
+            arrayInventory[rows][PRICE_INDEX] = sc.nextLine(); 
+            
+            
+            // prompt user for new quantity of the item
+            System.out.print("What is the new quantity of the item?: ");  
+            // update the appropriate array location with the next keyboard input
+            arrayInventory[rows][QTY_INDEX] = sc.nextLine();
+            
+            return; // Exit after successful update
+         }
+         else{
+         System.out.println("Item does not exist, try again"); // loop in the main method
+         return; // Exit
+         }
+      }
    }
    
    /*
