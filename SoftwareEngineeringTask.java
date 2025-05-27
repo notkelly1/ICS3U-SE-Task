@@ -118,8 +118,13 @@ public class SoftwareEngineeringTask
                   case "1":
                      //sc.nextLine();
                      System.out.println("Enter an 8 digit UPC Code");
-                     // only allow 8 digit inputs                     
-                     addInventory(sc.nextLine());
+                     // only allow 8 digit inputs
+                     
+                     // addinv will return true if the UPC code exist, returns false if UPC code doesnt exist          
+                     System.out.print(addInventory(sc.nextLine()));
+                     
+                     // if the 
+                     
                      // loop until Q is pressed to break the loop
                      break;
                      
@@ -131,25 +136,26 @@ public class SoftwareEngineeringTask
                      // loop until Q is pressed to break the loop
                      break; 
                      
-                  /*case 3:
+                  case "3":
                      System.out.println("Enter an 8 digit UPC Code");                     
                      delete(sc.nextLine());
                      break;
                      
-                  case 4:
+                  case "4":
                   
-                     checkInv(String codeUPC);
+                     System.out.println("Enter an 8 digit UPC Code");                     
+                     checkInv(sc.nextLine());
                      break;
                   
-                  case 5:
+                  case "5":
                   
                      listAll();
                      break;
                      
-                  case 6:
-                  
-                     listItem(String itemName);
-                     break;
+                  case "6":
+                     System.out.println("Enter an item name");
+                     listItem(sc.nextLine());
+                     break;/*
                   
                   case 7:
                   
@@ -652,7 +658,7 @@ public class SoftwareEngineeringTask
          for(int cols = 0; cols < INVENTORY_PARAMETERS; cols++){
             System.out.print(arrayInventory[rows][cols] + " ");
             }
-            //System.out.println("new item\n");
+            System.out.println("\n");
       }
    }
    
@@ -678,7 +684,8 @@ public class SoftwareEngineeringTask
             System.out.printf("The item UPC is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][UPC_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]);
             return;
          }
-      }      
+      }
+      System.out.printf("Item does not exist.");      
    }
    
    /*
@@ -690,6 +697,6 @@ public class SoftwareEngineeringTask
    */
    public static void checkOut(String codeUPC)
    {
-      
+      // 
    }
 }
