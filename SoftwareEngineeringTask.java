@@ -27,8 +27,10 @@ public class SoftwareEngineeringTask
       String employeeID = "";
       String employeePIN = "";
       String choice = "";
+      String userInput = "";
       int loginResult = 0;
       boolean isValid;
+      boolean exitSwitchLoop = false;
       
       // Start fileReader
       readFile(TRANSACTION_HISTORY);
@@ -118,16 +120,38 @@ public class SoftwareEngineeringTask
                switch (choice)
                {
                   case "1":
-                     //sc.nextLine();
-                     System.out.println("Enter an 8 digit UPC Code");
-                     // only allow 8 digit inputs
                      
-                     // addinv will return true if the UPC code exist, returns false if UPC code doesnt exist          
-                     System.out.print(addInventory(sc.nextLine()));
-                     
-                     // if the 
-                     
-                     // loop until Q is pressed to break the loop
+                     do{ // loop until Q is pressed to break the loop}
+                           System.out.println("Enter an 8 digit UPC Code");
+                           // save next line into userinput
+                           userInput = sc.nextLine();
+                           isValid = false;
+                           try
+                           {
+                              int upc = Integer.parseInt(userInput);
+                              
+                              if (userInput.length() == 8)
+                              {             
+                                 isValid = true;
+                                 addInventory(userInput);
+                                  // addinv will return true if the UPC code exist, returns false if UPC code doesnt exist          
+                                  System.out.print(addInventory(userInput));
+  
+                              }
+                              else// if the length of the string is not 8                                              
+                              {
+                                 System.out.println("UPC must be a 8-digits. Please try again."); 
+                              }   
+                           }
+                           catch(NumberFormatException e)
+                           {
+                              if (!(employeeID.equalsIgnoreCase("q")))
+                              {
+                                 System.out.println("UPC must be a 8-digit number. Please try again.");
+                              }
+                           } 
+                        } while(!(employeeID.equalsIgnoreCase("q"))); 
+                                              
                      break;
                      
                   case "2":
@@ -498,7 +522,7 @@ public class SoftwareEngineeringTask
    Return Type: Boolean
    Returns: true if the UPC exists, false if UPC doesn't.
    Parameters: String codeUPC
-   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it doesn’t match, the user will be prompted to enter the name, price, and quantity if the UPC code does not match anything in the current inventory. This will loop until Q is pressed to return to the main menu.
+   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it doesnÂ’t match, the user will be prompted to enter the name, price, and quantity if the UPC code does not match anything in the current inventory. This will loop until Q is pressed to return to the main menu.
    Change:
    */
    public static boolean addInventory(String codeUPC)
@@ -538,7 +562,8 @@ public class SoftwareEngineeringTask
       
       // check the array for codeUPC
       for(int rows = 0; rows < MAX_SIZE; rows++){
-         if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
+         System.out.println("Checking row " + rows + ": " + arrayInventory[rows][UPC_INDEX]);
+         if(codeUPC.trim().equals(arrayInventory[rows][UPC_INDEX])){
          //if (codeUPC.trim().equals(arrayInventory[rows][UPC_INDEX].trim())){
             // print the name, current price & qty of item
             System.out.printf("The item name is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]);
@@ -556,18 +581,16 @@ public class SoftwareEngineeringTask
             
             return; // Exit after successful update
          }
-         else{
-         System.out.println("Item does not exist, try again"); // loop in the main method
-         return; // Exit
-         }
       }
+      System.out.println("Item does not exist, try again"); // loop in the main method
+      return; // Exit
    }
    
    /*
    Name: delete
    Return Type: void
    Parameters: String codeUPC
-   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it does match, then the user will be prompted for the name of the item to be deleted, removing it from the system, and then return to the main menu. If it doesn’t match a message that the item does not exist will be printed, then return to the main menu. 
+   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it does match, then the user will be prompted for the name of the item to be deleted, removing it from the system, and then return to the main menu. If it doesnÂ’t match a message that the item does not exist will be printed, then return to the main menu. 
    Change:
    */
    public static void delete(String codeUPC)
@@ -623,7 +646,7 @@ public class SoftwareEngineeringTask
    Name: checkInv
    Return Type: void
    Parameters: String upcCode
-   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it exists the the name, current price, and current quantity of the item will be printed. If it doesn’t match a message that the item does not exist will be printed. This will loop until Q is pressed to return to the main menu.
+   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it exists the the name, current price, and current quantity of the item will be printed. If it doesnÂ’t match a message that the item does not exist will be printed. This will loop until Q is pressed to return to the main menu.
    Change:
    */
    public static void checkInv(String codeUPC)
