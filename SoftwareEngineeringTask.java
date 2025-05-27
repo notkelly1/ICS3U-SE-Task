@@ -443,7 +443,7 @@ public class SoftwareEngineeringTask
    */
    public static void addEmployee(String employeeID)
    {
-   
+      
    }
    /*
    Name: editDetails
@@ -501,10 +501,19 @@ public class SoftwareEngineeringTask
    Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it doesn’t match, the user will be prompted to enter the name, price, and quantity if the UPC code does not match anything in the current inventory. This will loop until Q is pressed to return to the main menu.
    Change:
    */
-   public static boolean addInventory(String codeUPC)
+   public static void addInventory(String codeUPC)
    {
       // Constant Declaration
+      final int NAME_INDEX = 0;
       final int UPC_INDEX = 1;
+      final int PRICE_INDEX = 2;
+      final int QTY_INDEX = 3;
+      // Variable declaration
+      int firstEmptyIndex = 0;
+      int rows = 0;
+      
+      // Creating Scanner
+      Scanner sc = new Scanner(System.in);
       
       // check the array for codeUPC
       for(int rows = 0; rows < MAX_SIZE; rows++){
@@ -512,10 +521,17 @@ public class SoftwareEngineeringTask
             // check (delete later)
             System.out.print("UPC code exists in array!");
             // once the return is reached, the rest of the method doesn't run.
-            return true; 
+            return; 
          }
       }
-      return false;
+      // upc doesnt exist in the array >> prompt user for name, price, and qty
+      // save new information into a new index in the array
+      //find first empty index
+      while(arrayInventory[rows][UPC_INDEX]!= null){
+         firstEmptyIndex++;
+         rows++;
+      }    
+      return;
    }
    
    /*
