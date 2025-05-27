@@ -610,7 +610,6 @@ public class SoftwareEngineeringTask
       else{*/
          System.out.print("Item does not exist.");
       }              
-   }
    
    /*
    Name: checkInv
@@ -674,7 +673,7 @@ public class SoftwareEngineeringTask
       
       // compare item name with values in inventoryArray
       for(int rows = 0; rows < MAX_SIZE; rows++){
-         if(codeUPC.equals(arrayInventory[rows][NAME_INDEX])){
+         if(itemName.equals(arrayInventory[rows][NAME_INDEX])){
             // print the UPC, current price & qty of item
             System.out.printf("The item UPC is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][UPC_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]);
             return;
