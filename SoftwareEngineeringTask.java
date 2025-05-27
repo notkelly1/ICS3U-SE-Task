@@ -117,24 +117,28 @@ public class SoftwareEngineeringTask
                {
                   case "1":
                      //sc.nextLine();
-                     System.out.println("Enter an 8 digit UPC Code");                     
+                     System.out.println("Enter an 8 digit UPC Code");
+                     // only allow 8 digit inputs                     
                      addInventory(sc.nextLine());
+                     // loop until Q is pressed to break the loop
                      break;
                      
                   case "2":
                   
-                     System.out.println("Enter an 8 digit UPC Code");  
+                     System.out.println("Enter an 8 digit UPC Code");
+                     // only allow 8 digit inputs  
                      updateInventory(sc.nextLine());
-                     break; /*
+                     // loop until Q is pressed to break the loop
+                     break; 
                      
-                  case 3:
-                  
-                     delete(String upcCode);
+                  /*case 3:
+                     System.out.println("Enter an 8 digit UPC Code");                     
+                     delete(sc.nextLine());
                      break;
                      
                   case 4:
                   
-                     checkInv(String upcCode);
+                     checkInv(String codeUPC);
                      break;
                   
                   case 5:
@@ -526,8 +530,8 @@ public class SoftwareEngineeringTask
       
       // check the array for codeUPC
       for(int rows = 0; rows < MAX_SIZE; rows++){
-         //if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
-         if (codeUPC.trim().equals(arrayInventory[rows][UPC_INDEX].trim())){
+         if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
+         //if (codeUPC.trim().equals(arrayInventory[rows][UPC_INDEX].trim())){
             // print the name, current price & qty of item
             System.out.printf("The item name is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]);
             
@@ -554,13 +558,58 @@ public class SoftwareEngineeringTask
    /*
    Name: delete
    Return Type: void
-   Parameters: String upcCode
+   Parameters: String codeUPC
    Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it does match, then the user will be prompted for the name of the item to be deleted, removing it from the system, and then return to the main menu. If it doesn’t match a message that the item does not exist will be printed, then return to the main menu. 
    Change:
    */
-   public static void delete(String upcCode)
+   public static void delete(String codeUPC)
    {
-
+      // Constant Declaration
+      final int UPC_INDEX = 1;
+      final int NAME_INDEX = 0;
+      
+      // Variable Declaration
+      //String itemName = "";
+      //boolean itemExists = false;
+      
+      // Creating Scanner
+      Scanner sc = new Scanner(System.in);
+      // checks codeUPC against all values in the inventory array
+      
+      // check the array for codeUPC
+      for(int rows = 0; rows < MAX_SIZE; rows++){
+         if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
+            // the item exists
+            System.out.println("UPC code exists in array!");
+            System.out.print("Please input the name of the item: ");
+            
+            //itemName = sc.nextLine();
+            if(arrayInventory[rows][NAME_INDEX].equals(sc.nextLine())){
+               // delete item (loop through specific array and make everything ""
+               for(int cols = 0;  cols < INVENTORY_PARAMETERS; cols++){
+                  arrayInventory[rows][cols] = "";
+               }
+               System.out.print("Incorrect Item Name");
+            }
+            else{
+               System.out.print("Item deleted successfully.");
+            }
+            //itemExists = true;
+            return;            
+         }         
+      }
+      
+      
+      // if statement to check
+      // if it exists: Prompt user for name of item to delete
+      /*if(itemExists){
+         System.out.print("Please input the name of the item: ");
+         itemName = sc.nextLine();
+      }
+      // if it does not exist: print item does not exist
+      else{*/
+         System.out.print("Item does not exist.");
+      }              
    }
    
    /*
@@ -570,9 +619,24 @@ public class SoftwareEngineeringTask
    Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it exists the the name, current price, and current quantity of the item will be printed. If it doesn’t match a message that the item does not exist will be printed. This will loop until Q is pressed to return to the main menu.
    Change:
    */
-   public static void checkInv(String upcCode)
+   public static void checkInv(String codeUPC)
    {
-
+      // Constant Declaration
+      final int NAME_INDEX = 0;
+      final int UPC_INDEX = 1;
+      final int PRICE_INDEX = 2;
+      final int QTY_INDEX = 3;
+      
+      // determine if item exists in array       
+      for(int rows = 0; rows < MAX_SIZE; rows++){
+         if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
+            // print the name, current price & qty of item
+            System.out.printf("The item name is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]);
+            return;
+         }
+      }
+      System.out.printf("\nThe item does not exist.");
+      return;
    }
    
    /*
@@ -584,7 +648,13 @@ public class SoftwareEngineeringTask
    */
    public static void listAll()
    {
-
+      //print the array (INVENTORY)
+      for(int rows = 0; rows < MAX_SIZE; rows++){
+         for(int cols = 0; cols < INVENTORY_PARAMETERS; cols++){
+            System.out.print(arrayInventory[rows][cols] + " ");
+            }
+            //System.out.println("new item\n");
+      }
    }
    
    /*
@@ -596,18 +666,31 @@ public class SoftwareEngineeringTask
    */
    public static void listItem(String itemName)
    {
-
+      // Constant declaration
+      final int NAME_INDEX = 0;
+      final int UPC_INDEX = 1;
+      final int PRICE_INDEX = 2;
+      final int QTY_INDEX = 3;
+      
+      // compare item name with values in inventoryArray
+      for(int rows = 0; rows < MAX_SIZE; rows++){
+         if(codeUPC.equals(arrayInventory[rows][NAME_INDEX])){
+            // print the UPC, current price & qty of item
+            System.out.printf("The item UPC is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][UPC_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]);
+            return;
+         }
+      }      
    }
    
    /*
    Name: checkOut
    Return Type: void
-   Parameters: String upc
+   Parameters: String codeUPC
    Description: This method prompts the user to input the UPC for items to be purchased, keeping a total of the price. If a UPC does not exist, an error is printed. If it does, the name, price, and total items scanned are displayed. If 'Q' is entered, a receipt is printed, outlining the transaction number, item names, and price. Inventory counts are reduced as items are purchased.
    Change:
    */
-   public static void checkOut(String upc)
+   public static void checkOut(String codeUPC)
    {
-
+      
    }
 }
