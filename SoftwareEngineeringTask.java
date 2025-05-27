@@ -90,7 +90,8 @@ public class SoftwareEngineeringTask
             {
                System.out.println("Employee IDs must be a 5-digit number. Please try again.");
             }   
-         } while((!isValid) && !(employeeID.equalsIgnoreCase("quit")) && loginResult != 1 && loginResult != -1);  
+         } 
+         while((!isValid) && !(employeeID.equalsIgnoreCase("quit")) && loginResult != 1 && loginResult != -1);  
          
          if(!(employeeID.equalsIgnoreCase("quit")))
          {  
@@ -219,38 +220,37 @@ public class SoftwareEngineeringTask
                      viewTransactions(int specificTransaction);
                      break;
                }*/
-            }
-            
-            // FileWriter method used to update the file after all changes are mad               
-               writeFile(TRANSACTION_HISTORY);
-               writeFile(INVENTORY);
-               writeFile(EMPLOYEE);
-               
-               // test print the array (TRANSACTIONS)
-               for(int rows = 0; rows < MAX_SIZE; rows++){
-                  for(int cols = 0; cols < TRANSACTION_PARAMETERS; cols++){
-                     System.out.print(arrayTransactions[rows][cols] + " ");
-                     }
-                     System.out.println("new transaction\n");
-               } 
-               
-               // test print the array (INVENTORY)
-               for(int rows = 0; rows < MAX_SIZE; rows++){
-                  for(int cols = 0; cols < INVENTORY_PARAMETERS; cols++){
-                     System.out.print(arrayInventory[rows][cols] + " ");
-                     }
-                     System.out.println("new item\n");
-               }
-               
-               // test print the array (EMPLOYEES)
-               for(int rows = 0; rows < MAX_SIZE; rows++){
-                  for(int cols = 0; cols < EMPLOYEE_PARAMETERS; cols++){
-                     System.out.print(arrayEmployees[rows][cols] + " ");
-                     }
-                     System.out.println("new employee\n");
-               }                   
+            }                  
          }      
+      }// ends the loop
+      // FileWriter method used to update the file after all changes are made               
+         writeFile(TRANSACTION_HISTORY);
+         writeFile(INVENTORY);
+         writeFile(EMPLOYEE);
+      
+      // test print the array (TRANSACTIONS)
+      for(int rows = 0; rows < MAX_SIZE; rows++){
+         for(int cols = 0; cols < TRANSACTION_PARAMETERS; cols++){
+            System.out.print(arrayTransactions[rows][cols] + " ");
+            }
+            System.out.println("new transaction\n");
+      } 
+      
+      // test print the array (INVENTORY)
+      for(int rows = 0; rows < MAX_SIZE; rows++){
+         for(int cols = 0; cols < INVENTORY_PARAMETERS; cols++){
+            System.out.print(arrayInventory[rows][cols] + " ");
+            }
+            System.out.println("new item\n");
       }
+      
+      // test print the array (EMPLOYEES)
+      for(int rows = 0; rows < MAX_SIZE; rows++){
+         for(int cols = 0; cols < EMPLOYEE_PARAMETERS; cols++){
+            System.out.print(arrayEmployees[rows][cols] + " ");
+            }
+            System.out.println("new employee\n");
+      } 
    }  
    /*
    Name: login
@@ -348,10 +348,13 @@ public class SoftwareEngineeringTask
             out.write("***\n");
             // write *** to seperate for new employee/item/checkout
          }
+         out.close();
       }
+      
       catch(IOException e)
       {
       }      
+   System.out.print("written");
    }
    
    /*
@@ -523,7 +526,8 @@ public class SoftwareEngineeringTask
       
       // check the array for codeUPC
       for(int rows = 0; rows < MAX_SIZE; rows++){
-         if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
+         //if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
+         if (codeUPC.trim().equals(arrayInventory[rows][UPC_INDEX].trim())){
             // print the name, current price & qty of item
             System.out.printf("The item name is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]);
             
