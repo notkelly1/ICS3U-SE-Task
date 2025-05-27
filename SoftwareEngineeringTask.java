@@ -1,4 +1,3 @@
-
 /*Lauren's update*/
 import java.util.*;
 import java.lang.*;
@@ -88,7 +87,10 @@ public class SoftwareEngineeringTask
             }
             catch(NumberFormatException e)
             {
-               System.out.println("Employee IDs must be a 5-digit number. Please try again.");
+               if (!(employeeID.equalsIgnoreCase("quit")))
+               {
+                  System.out.println("Employee IDs must be a 5-digit number. Please try again.");
+               }
             }   
          } 
          while((!isValid) && !(employeeID.equalsIgnoreCase("quit")) && loginResult != 1 && loginResult != -1);  
@@ -496,7 +498,7 @@ public class SoftwareEngineeringTask
    Return Type: Boolean
    Returns: true if the UPC exists, false if UPC doesn't.
    Parameters: String codeUPC
-   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it doesnâ€™t match, the user will be prompted to enter the name, price, and quantity if the UPC code does not match anything in the current inventory. This will loop until Q is pressed to return to the main menu.
+   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it doesn’t match, the user will be prompted to enter the name, price, and quantity if the UPC code does not match anything in the current inventory. This will loop until Q is pressed to return to the main menu.
    Change:
    */
    public static boolean addInventory(String codeUPC)
@@ -565,7 +567,7 @@ public class SoftwareEngineeringTask
    Name: delete
    Return Type: void
    Parameters: String codeUPC
-   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it does match, then the user will be prompted for the name of the item to be deleted, removing it from the system, and then return to the main menu. If it doesnâ€™t match a message that the item does not exist will be printed, then return to the main menu. 
+   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it does match, then the user will be prompted for the name of the item to be deleted, removing it from the system, and then return to the main menu. If it doesn’t match a message that the item does not exist will be printed, then return to the main menu. 
    Change:
    */
    public static void delete(String codeUPC)
@@ -621,7 +623,7 @@ public class SoftwareEngineeringTask
    Name: checkInv
    Return Type: void
    Parameters: String upcCode
-   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it exists the the name, current price, and current quantity of the item will be printed. If it doesnâ€™t match a message that the item does not exist will be printed. This will loop until Q is pressed to return to the main menu.
+   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it exists the the name, current price, and current quantity of the item will be printed. If it doesn’t match a message that the item does not exist will be printed. This will loop until Q is pressed to return to the main menu.
    Change:
    */
    public static void checkInv(String codeUPC)
