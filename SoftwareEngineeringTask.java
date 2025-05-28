@@ -142,7 +142,6 @@ public class SoftwareEngineeringTask
                               try{
                                  inputCheckNum = Integer.parseInt(userInput);
                                  if (userInput.length() == 8){
-                                    isValid = true; // determines if the length is appropriate
                                     // run method
                                     addInventory(userInput);  
                                  }
@@ -156,7 +155,7 @@ public class SoftwareEngineeringTask
                            }
                         }
                         // check condition
-                        while(/*!isValid &&*/ !userInput.equalsIgnoreCase("q")); 
+                        while(!userInput.equalsIgnoreCase("q")); 
                                                  
                         break;
                         
@@ -172,7 +171,6 @@ public class SoftwareEngineeringTask
                               try{
                                  inputCheckNum = Integer.parseInt(userInput);
                                  if (userInput.length() == 8){
-                                    isValid = true; // determines if the length is appropriate
                                     // run method
                                     updateInventory(userInput);  
                                  }
@@ -187,24 +185,44 @@ public class SoftwareEngineeringTask
                         }
                         
                         // check condition
-                        while(!isValid && !userInput.equalsIgnoreCase("q"));
-                        
-                        /*System.out.println("Enter an 8 digit UPC Code");
-                        // only allow 8 digit inputs  
-                        updateInventory(sc.nextLine());
-                        // loop until Q is pressed to break the loop*/
+                        while(!userInput.equalsIgnoreCase("q"));
+                        // loop until Q is pressed to break the loop
                         
                         break; 
                         
                      case "3":
+                        
                         System.out.println("Enter an 8 digit UPC Code");                     
                         delete(sc.nextLine());
                         break;
                         
                      case "4":
                      
-                        System.out.println("Enter an 8 digit UPC Code");                     
-                        checkInv(sc.nextLine());
+                        do{
+                           System.out.println("Enter an 8-digit UPC Code (or Q to quit):");
+                           userInput = sc.nextLine();
+                           isValid = false; 
+                           
+                           if(!userInput.equalsIgnoreCase("q")){
+                              // try catch to determine if the UPC code is all numbers 
+                              try{
+                                 inputCheckNum = Integer.parseInt(userInput);
+                                 if (userInput.length() == 8){
+                                    // run method
+                                    checkInv(userInput);  
+                                 }
+                                 else{
+                                    System.out.println("UPC must be exactly 8 digits. Please try again.");
+                                 }
+                              }
+                              catch(NumberFormatException e){
+                                 System.out.println("UPC must be an 8 digit number. Please try again.");
+                              }
+                           }
+                        }
+                        
+                        // check condition
+                        while(!userInput.equalsIgnoreCase("q"));
                         break;
                      
                      case "5":
@@ -714,14 +732,15 @@ public class SoftwareEngineeringTask
             
             //itemName = sc.nextLine();
             if(arrayInventory[rows][NAME_INDEX].equals(sc.nextLine())){
-               // delete item (loop through specific array and make everything ""
+               System.out.println("Name Found!");
+               // delete item (loop through specific row and make everything ""
                for(int cols = 0;  cols < INVENTORY_PARAMETERS; cols++){
                   arrayInventory[rows][cols] = "";
                }
-               System.out.print("Incorrect Item Name");
+               System.out.println("Item deleted successfully.");
             }
             else{
-               System.out.print("Item deleted successfully.");
+               System.out.println("Name does not exist in the Inventory. (Incorrect Item Name)");
             }
             //itemExists = true;
             return;            
@@ -763,7 +782,7 @@ public class SoftwareEngineeringTask
             return;
          }
       }
-      System.out.printf("\nThe item does not exist.");
+      System.out.println("The item does not exist. Try again.");
       return;
    }
    
@@ -808,7 +827,7 @@ public class SoftwareEngineeringTask
             return;
          }
       }
-      System.out.printf("Item does not exist.");      
+      System.out.println("Item does not exist.");      
    }
    
    /*
