@@ -850,6 +850,7 @@ public class SoftwareEngineeringTask
       String codeUPC = "";
       double subtotal = 0;  
       int newQty = 0; 
+      boolean itemFound = false;
       
       // Creating Scanner
       Scanner sc = new Scanner(System.in);   
@@ -860,44 +861,48 @@ public class SoftwareEngineeringTask
          codeUPC = sc.nextLine();
          // perform check to see if UPC exists
             for(int rows = 0; rows < MAX_SIZE; rows++){
-            if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
-               // print the name, current price & qty of item
-               System.out.printf("The item name is %s. The current price is $%s\n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX]);
-               scannedItems = scannedItems + arrayInventory[rows][NAME_INDEX] + ", ";
-               
-               // check qty
-               if(Integer.parseInt(arrayInventory[rows][QTY_INDEX]) == 0){
-                  System.out.println("Inventory count kept at zero.");
-               }
-               else{
-                  // reduce inv count by 1
-                  try{
-                     newQty =  Integer.parseInt(arrayInventory[rows][QTY_INDEX]) - 1;
-                     arrayInventory[rows][QTY_INDEX] = ("" + newQty);
-                  } 
-                  catch (NumberFormatException e) {
-                      System.out.println("Invalid quantity format at row " + rows);
-                  }
-               }
-               
-               // Calculate transaction
-               try{
-                  subtotal += Double.parseDouble(arrayInventory[rows][PRICE_INDEX]);
+               if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
+                  // print the name, current price & qty of item
+                  System.out.printf("The item name is %s. The current price of the item is $%s\n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX]);
+                  scannedItems = scannedItems + arrayInventory[rows][NAME_INDEX] + ", ";
+                  itemFound = true;
                   
-               }
-               catch (NumberFormatException e) {
-                      System.out.println("Invalid price format at row " + rows);
+                  // check qty
+                  if(Integer.parseInt(arrayInventory[rows][QTY_INDEX]) == 0){
+                     System.out.println("Inventory count kept at zero.");
                   }
-   
-               // print all items scanned thus far
-               System.out.println(scannedItems);
-               
-            }
-         } // end of for
-         System.out.println("The item does not exist. Try again.");     
+                  else{
+                     // reduce inv count by 1
+                     try{
+                        newQty =  Integer.parseInt(arrayInventory[rows][QTY_INDEX]) - 1;
+                        arrayInventory[rows][QTY_INDEX] = ("" + newQty);
+                     } 
+                     catch (NumberFormatException e) {
+                         System.out.println("Invalid quantity format at row " + rows);
+                     }
+                  }
+                  
+                  // Calculate transaction
+                  try{
+                     subtotal += Double.parseDouble(arrayInventory[rows][PRICE_INDEX]);
+                     // subtotal check
+                     System.out.printf("Current Subtotal is $%.2f.\n", subtotal);
+                     
+                  }
+                  catch (NumberFormatException e) {
+                         System.out.println("Invalid price format at row " + rows);
+                     }
+      
+                  // print all items scanned thus far
+                  System.out.println(scannedItems);
+               }
+         } // end of for     
+         if (!itemFound){
+            System.out.println("The item does not exist. Try again.");
+         }
       }
       // loop until 'q' is entered 
-      while(!(codeUPC.equalsIgnoreCase("Q")));
+      while(!(codeUPC.equalsIgnoreCase("q")));
          
          // if statement
             // error if UPC does not exist
@@ -912,4 +917,4 @@ public class SoftwareEngineeringTask
       // record transactions
 
    }
-}
+}//end of class
