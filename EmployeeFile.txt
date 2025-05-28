@@ -2,29 +2,29 @@
 3939
 Hatsune Miku
 Manager
-Active
+Inactive
 ***
 00021
 5467
 Sam Wilson
 General Manager
-Active 
+Active
 ***
 00022
 5467
 Wam Silson
 General Manager
-Active  
+Active
 ***
-null
-null
-null
-null
-null
+
+
+
+
+
 ***
-null
-null
-null
-null
-null
+
+
+
+
+
 ***
