@@ -28,6 +28,12 @@ public class SoftwareEngineeringTask
       String employeePIN = "";
       String choice = "";
       String userInput = "";
+      String pin = "" ;                               
+      String firstName = "";               
+      String lastName = "";              
+      String title = "";              
+      String status = "";
+      String fileName = "";
       int loginResult = 0;
       int inputCheckNum;
       boolean isValid;
@@ -237,7 +243,7 @@ public class SoftwareEngineeringTask
                      
                      case "7":
                         // UNCOMMENT THIS WHEN I FIGURE OUT HOW TO MAKE CHECKOUT METHOD
-                        checkOut(employeeID);
+                        //checkOut(String upc);
                         exitMenuLoop = true;
                         break;
                   }
@@ -248,49 +254,139 @@ public class SoftwareEngineeringTask
                System.out.println("Login successful (admin).");
                System.out.println("Select a number:\n1. Add Inventory\n2. Update Inventory\n3. Delete Inventory\n4. Check Inventory\n5. List all items\n6. List item\n7. Checkout\n8. Add an employee\n9. Edit an employee's details\n10. Activate/Deactivate an employee\n11. View all transactions\n12. View a transaction by transaction number");
                choice = sc.nextLine();
-               /*switch (choice)
+               switch (choice)
                {
-                  case 1:
+                  case "1":
+                        
+                        do{
+                           System.out.println("Enter an 8-digit UPC Code (or Q to quit):");
+                           userInput = sc.nextLine();
+                           isValid = false; 
+                           
+                           if(!userInput.equalsIgnoreCase("q")){
+                              // try catch to determine if the UPC code is all numbers 
+                              try{
+                                 inputCheckNum = Integer.parseInt(userInput);
+                                 if (userInput.length() == 8){
+                                    // run method
+                                    addInventory(userInput);  
+                                 }
+                                 else{
+                                    System.out.println("UPC must be exactly 8 digits. Please try again.");
+                                 }
+                              }
+                              catch(NumberFormatException e){
+                                 System.out.println("UPC must be an 8 digit number. Please try again.");
+                              }
+                           }
+                        }
+                        // check condition
+                        while(!userInput.equalsIgnoreCase("q")); 
+                                                 
+                        break;
+                        
+                     case "2":
                      
-                     addInventory(String codeUPC);
-                     break;
+                        do{
+                           System.out.println("Enter an 8-digit UPC Code (or Q to quit):");
+                           userInput = sc.nextLine();
+                           isValid = false; 
+                           
+                           if(!userInput.equalsIgnoreCase("q")){
+                              // try catch to determine if the UPC code is all numbers 
+                              try{
+                                 inputCheckNum = Integer.parseInt(userInput);
+                                 if (userInput.length() == 8){
+                                    // run method
+                                    updateInventory(userInput);  
+                                 }
+                                 else{
+                                    System.out.println("UPC must be exactly 8 digits. Please try again.");
+                                 }
+                              }
+                              catch(NumberFormatException e){
+                                 System.out.println("UPC must be an 8 digit number. Please try again.");
+                              }
+                           }
+                        }
+                        
+                        // check condition
+                        while(!userInput.equalsIgnoreCase("q"));
+                        // loop until Q is pressed to break the loop
+                        
+                        break; 
+                        
+                     case "3":
+                        
+                        System.out.println("Enter an 8 digit UPC Code");                     
+                        delete(sc.nextLine());
+                        break;
+                        
+                     case "4":
                      
-                  case 2:
-                  
-                     updateInventory(int specificTransaction);
-                     break;
+                        do{
+                           System.out.println("Enter an 8-digit UPC Code (or Q to quit):");
+                           userInput = sc.nextLine();
+                           isValid = false; 
+                           
+                           if(!userInput.equalsIgnoreCase("q")){
+                              // try catch to determine if the UPC code is all numbers 
+                              try{
+                                 inputCheckNum = Integer.parseInt(userInput);
+                                 if (userInput.length() == 8){
+                                    // run method
+                                    checkInv(userInput);  
+                                 }
+                                 else{
+                                    System.out.println("UPC must be exactly 8 digits. Please try again.");
+                                 }
+                              }
+                              catch(NumberFormatException e){
+                                 System.out.println("UPC must be an 8 digit number. Please try again.");
+                              }
+                           }
+                        }
+                        
+                        // check condition
+                        while(!userInput.equalsIgnoreCase("q"));
+                        break;
                      
-                  case 3:
-                  
-                     delete(String upcCode);
-                     break;
+                     case "5":
                      
-                  case 4:
-                  
-                     checkInv(String upcCode);
-                     break;
-                  
-                  case 5:
-                  
-                     listAll();
-                     break;
+                        listAll();
+                        break;
+                        
+                     case "6":
+                        System.out.println("Enter an item name");
+                        listItem(sc.nextLine());
+                        break;
                      
-                  case 6:
+                     case "7":
+                        // UNCOMMENT THIS WHEN I FIGURE OUT HOW TO MAKE CHECKOUT METHOD
+                        //checkOut(String upc);
+                        exitMenuLoop = true;
+                        break;                 
+                     case "8":
                   
-                     listItem(String itemName);
-                     break;
+                        System.out.print("Enter PIN: ");
+                        pin = sc.nextLine();
+               
+                        System.out.print("Enter First Name: ");
+                        firstName = sc.nextLine();
+               
+                        System.out.print("Enter Last Name: ");
+                        lastName = sc.nextLine();
+               
+                        System.out.print("Enter Title: ");
+                        title = sc.nextLine();
+               
+                        System.out.print("Enter Status (Active or Inactive): ");
+                        status = sc.nextLine();
+                              
+                        addEmployee( pin, firstName, lastName, title, status);
+                        break;
                   
-                  case 7:
-                  
-                     checkOut(String upc);
-                     break;
-                  
-                  case 8:
-                  
-                     addEmployee(String employeeID);
-                     break;
-                  
-                  case 9:
+                  /*case 9:
                   
                      editDetails(String employeeID);
                      break;
@@ -298,21 +394,27 @@ public class SoftwareEngineeringTask
                   case 10:
                   
                      changeEmployeeStatus(String employeeID);
+                     break;*/
+                     
+                  case "11":
+                  
+                     viewAllTransactions(choice);
                      break;
                      
-                  case 11:
+                  case "12":
                   
-                     viewAllTransactions();
-                     break;
-                     
-                  case 12:
-                  
-                     viewTransactions(int specificTransaction);
-                     break;
-               }*/
+                      // Ask user which transaction to view
+                       System.out.print("Enter the transaction number you want to view: ");
+                       int transactionNumber = sc.nextInt();
+               
+                       // Call the method with the given transaction number
+                       viewTransactions(transactionNumber);                     
+                       break;
+               }
             }                  
          }      
-      }// ends the loop
+      }
+      // ends the loop
       // FileWriter method used to update the file after all changes are made               
          writeFile(TRANSACTION_HISTORY);
          writeFile(INVENTORY);
@@ -540,14 +642,145 @@ public class SoftwareEngineeringTask
    /*
    Name: addEmployee
    Return Type: void
-   Parameters: employeeID
+   Parameters: String choice
    Description: This method will assign the next available Employee ID number and prompt the administrator to provide: 
    the PIN, first name, last name, title and status of the new employee, updating all information to their respective arrays
    Change:
    */
-   public static void addEmployee(String employeeID)
+   public static void addEmployee(String pin, String firstName, String lastName, String title, String status) 
    {
+       String[] lines = new String[1000];
+       int totalLines = 0;
+       String line;
+       int start = -1;
+       int maxID = 0;
+       int newID = 0;
+       String employeeID = "";
+       boolean isNumber;
    
+       // Step 1: Read the file into the lines array
+       try 
+       {
+           BufferedReader in = new BufferedReader(new FileReader("EmployeeFile.txt"));
+           while ((line = in.readLine()) != null) 
+           {
+               lines[totalLines] = line;
+               totalLines++;
+           }
+           in.close();
+       } 
+       catch (IOException e) 
+       {
+           System.out.println("Error reading file.");
+           return;
+       }
+   
+       // Step 2: Find the first empty slot pattern: ***, "", ***
+       for (int j = 0; j < totalLines - 5; j++) 
+       {
+             if (lines[j].equals("") && lines[j + 1].equals("") && lines[j + 2].equals("") && lines[j + 3].equals("") && lines[j + 4].equals("") && lines[j + 5].equals("***")) 
+             {
+                 start = j;
+                 break;
+             }
+       }
+   
+       if (start == -1) 
+       {
+           System.out.println("No available employee slot.");
+           return;
+       }
+   
+       System.out.println("Found slot at line: " + start);
+   
+       // Step 3: Find the highest existing employee ID (5-digit number)
+       for (int i = 0; i < totalLines; i++) 
+       {
+           line = lines[i];
+           if (line != null && line.length() == 5) 
+           {
+               isNumber = true;
+               for (int k = 0; k < 5; k++) 
+               {
+                   char c = line.charAt(k);
+                   if (c < '0' || c > '9') 
+                   {
+                       isNumber = false;
+                       break;
+                   }
+               }
+               if (isNumber) 
+               {
+                   int id = Integer.parseInt(line);
+                   if (id > maxID) 
+                   {
+                       maxID = id;
+                   }
+               }
+           }
+       }
+   
+       // Step 4: Generate new employee ID with leading zeros
+       newID = maxID + 1;
+       if (newID < 10) 
+       {
+           employeeID = "0000" + newID;
+       } 
+       else if (newID < 100) 
+       {
+           employeeID = "000" + newID;
+       } 
+       else if (newID < 1000) 
+       {
+           employeeID = "00" + newID;
+       } 
+       else if (newID < 10000) 
+       {
+           employeeID = "0" + newID;
+       } 
+       else 
+       {
+           employeeID = "" + newID;
+       }
+   
+       System.out.println("Writing employee ID: " + employeeID);
+   
+       // Step 5: Create new employee info array
+       String[] newEmployeeInfo = new String[5];
+       newEmployeeInfo[0] = employeeID;
+       newEmployeeInfo[1] = pin;
+       newEmployeeInfo[2] = firstName + " " + lastName;
+       newEmployeeInfo[3] = title;
+       newEmployeeInfo[4] = status;
+   
+       // Step 6: Copy new employee info into lines array using a loop
+       int idx = 0;
+       for (int i = start; i < start + 5; i++) 
+       {
+           lines[i] = newEmployeeInfo[idx];
+           idx++;
+       }
+       // lines[start + 5] should remain "***" (leave untouched)
+   
+       // Step 7: Write the updated lines back to the file
+       try 
+       {
+           BufferedWriter bw = new BufferedWriter(new FileWriter("EmployeeFile.txt"));
+           for (int i = 0; i < totalLines; i++) 
+           {
+               if (lines[i] != null) 
+               {
+                   bw.write(lines[i]);
+               }
+               bw.newLine();
+           }
+           bw.close();
+           System.out.println("Employee added successfully with ID: " + employeeID);
+       } 
+       catch (IOException e) 
+       {
+           System.out.println("Error writing to file.");
+       }
    }
    /*
    Name: editDetails
@@ -576,13 +809,38 @@ public class SoftwareEngineeringTask
    /*
    Name: viewAllTransactions
    Return Type: void
-   Parameters: None
+   Parameters: String choice
    Description: This method reads the CheckoutTransactionsFile.txt, then prints all the transactions from the file
    Change:
    */
-   public static void viewAllTransactions()
+   public static void viewAllTransactions(String choice)
    {
+      File file = new File("CheckoutTransactionsFile.txt");
    
+       if (!file.exists()) 
+       {
+           System.out.println("No transactions found.");
+           return;
+       }
+   
+       try 
+       {
+           BufferedReader reader = new BufferedReader(new FileReader(file));
+           String line;
+   
+           System.out.println("=== All Transactions ===");
+   
+           while ((line = reader.readLine()) != null) 
+           {
+               System.out.println(line);
+           }
+   
+           reader.close();
+       } 
+       catch (IOException e) 
+       {
+         System.out.println(e + "  Problem reading " + file);       
+       }
    }
    
    /*
@@ -593,15 +851,84 @@ public class SoftwareEngineeringTask
    Change:
    */
    public static void viewTransactions(int specificTransaction)
-   {
+   {    
+      File file = new File("CheckoutTransactionsFile.txt");
 
+      if (!file.exists()) 
+      {
+         System.out.println("No transactions found.");
+         return;
+      }
+
+      try 
+      {
+         BufferedReader reader = new BufferedReader(new FileReader(file));
+   
+         String line;
+         boolean inTransaction = false;
+         boolean found = false;
+         boolean done = false;
+   
+         while (!done) 
+         {
+            line = reader.readLine();
+   
+            if (line == null) 
+            {
+               // end of file
+               done = true;
+            } 
+            else 
+            {
+               if (inTransaction == false) 
+               {
+                  // try to read the transaction number
+                  try 
+                  {
+                     int transactionNum = Integer.parseInt(line);
+                     if (transactionNum == specificTransaction) 
+                     {
+                        inTransaction = true;
+                        found = true;
+                        System.out.println(line); // print transaction number
+                     }
+                  } 
+                  catch (NumberFormatException e) 
+                  {
+                     // not a number, just ignore
+                  }
+               } 
+               else 
+               {
+                  // we're inside the transaction
+                  System.out.println(line);
+                  if (line.equals("***")) 
+                  {
+                  done = true; // stop after end of this transaction
+                  }
+               }
+            }
+         }
+   
+         if (found == false) 
+         {
+            System.out.println("Transaction #" + specificTransaction + " not found.");
+         }
+   
+         reader.close();
+
+      } 
+      catch (IOException e) 
+      {
+         System.out.println("Error reading file.");
+      }    
    }
    
    /*
    Name: addInventory
    Return Type: void
    Parameters: String codeUPC
-   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it doesnt match, the user will be prompted to enter the name, price, and quantity if the UPC code does not match anything in the current inventory. This will loop until Q is pressed to return to the main menu.
+   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it doesn’t match, the user will be prompted to enter the name, price, and quantity if the UPC code does not match anything in the current inventory. This will loop until Q is pressed to return to the main menu.
    Change:
    */
    public static void addInventory(String codeUPC)
@@ -706,7 +1033,7 @@ public class SoftwareEngineeringTask
    Name: delete
    Return Type: void
    Parameters: String codeUPC
-   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it does match, then the user will be prompted for the name of the item to be deleted, removing it from the system, and then return to the main menu. If it doesnt match a message that the item does not exist will be printed, then return to the main menu. 
+   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it does match, then the user will be prompted for the name of the item to be deleted, removing it from the system, and then return to the main menu. If it doesn’t match a message that the item does not exist will be printed, then return to the main menu. 
    Change:
    */
    public static void delete(String codeUPC)
@@ -763,7 +1090,7 @@ public class SoftwareEngineeringTask
    Name: checkInv
    Return Type: void
    Parameters: String upcCode
-   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it exists the the name, current price, and current quantity of the item will be printed. If it doesnt match a message that the item does not exist will be printed. This will loop until Q is pressed to return to the main menu.
+   Description: This method asks for an 8-digit UPC code, then checks and compares the code. If it exists the the name, current price, and current quantity of the item will be printed. If it doesn’t match a message that the item does not exist will be printed. This will loop until Q is pressed to return to the main menu.
    Change:
    */
    public static void checkInv(String codeUPC)
@@ -833,88 +1160,12 @@ public class SoftwareEngineeringTask
    /*
    Name: checkOut
    Return Type: void
-   Parameters: String employeeID (need to record which employee performed the action)
+   Parameters: String codeUPC
    Description: This method prompts the user to input the UPC for items to be purchased, keeping a total of the price. If a UPC does not exist, an error is printed. If it does, the name, price, and total items scanned are displayed. If 'Q' is entered, a receipt is printed, outlining the transaction number, item names, and price. Inventory counts are reduced as items are purchased.
    Change:
    */
-   public static void checkOut(String employeeID)
+   public static void checkOut(String codeUPC)
    {
-      // Constant Declaration
-      final int NAME_INDEX = 0;
-      final int UPC_INDEX = 1;
-      final int PRICE_INDEX = 2;
-      final int QTY_INDEX = 3;
-      
-      // Variable Declaration
-      String scannedItems = "The list of items is: ";
-      String codeUPC = "";
-      double subtotal = 0;  
-      int newQty = 0; 
-      boolean itemFound = false;
-      
-      // Creating Scanner
-      Scanner sc = new Scanner(System.in);   
-      
-      do{
-      // prompt user for a UPC
-      System.out.print("Please Enter a UPC: ");
-         codeUPC = sc.nextLine();
-         // perform check to see if UPC exists
-            for(int rows = 0; rows < MAX_SIZE; rows++){
-               if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
-                  // print the name, current price & qty of item
-                  System.out.printf("The item name is %s. The current price of the item is $%s\n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX]);
-                  scannedItems = scannedItems + arrayInventory[rows][NAME_INDEX] + ", ";
-                  itemFound = true;
-                  
-                  // check qty
-                  if(Integer.parseInt(arrayInventory[rows][QTY_INDEX]) == 0){
-                     System.out.println("Inventory count kept at zero.");
-                  }
-                  else{
-                     // reduce inv count by 1
-                     try{
-                        newQty =  Integer.parseInt(arrayInventory[rows][QTY_INDEX]) - 1;
-                        arrayInventory[rows][QTY_INDEX] = ("" + newQty);
-                     } 
-                     catch (NumberFormatException e) {
-                         System.out.println("Invalid quantity format at row " + rows);
-                     }
-                  }
-                  
-                  // Calculate transaction
-                  try{
-                     subtotal += Double.parseDouble(arrayInventory[rows][PRICE_INDEX]);
-                     // subtotal check
-                     System.out.printf("Current Subtotal is $%.2f.\n", subtotal);
-                     
-                  }
-                  catch (NumberFormatException e) {
-                         System.out.println("Invalid price format at row " + rows);
-                     }
-      
-                  // print all items scanned thus far
-                  System.out.println(scannedItems);
-               }
-         } // end of for     
-         if (!itemFound){
-            System.out.println("The item does not exist. Try again.");
-         }
-      }
-      // loop until 'q' is entered 
-      while(!(codeUPC.equalsIgnoreCase("q")));
-         
-         // if statement
-            // error if UPC does not exist
-            // if it exists the name and price of the item should be displayed, along with a total of all items that have been scanned thus far.  
-                           
-               // if statement to check if the qty = 0 
-               // reduce inventory count by 1 if qty > 0 (change global array)
-               // calculate transaction
-               // add the item name to the string 
-
-      // end loop
-      // record transactions
-
+      // 
    }
-}//end of class
+}
