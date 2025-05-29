@@ -237,7 +237,7 @@ public class SoftwareEngineeringTask
                      
                      case "7":
                         // UNCOMMENT THIS WHEN I FIGURE OUT HOW TO MAKE CHECKOUT METHOD
-                        //checkOut(String upc);
+                        checkOut(employeeID);
                         exitMenuLoop = true;
                         break;
                   }
@@ -833,12 +833,88 @@ public class SoftwareEngineeringTask
    /*
    Name: checkOut
    Return Type: void
-   Parameters: String codeUPC
+   Parameters: String employeeID (need to record which employee performed the action)
    Description: This method prompts the user to input the UPC for items to be purchased, keeping a total of the price. If a UPC does not exist, an error is printed. If it does, the name, price, and total items scanned are displayed. If 'Q' is entered, a receipt is printed, outlining the transaction number, item names, and price. Inventory counts are reduced as items are purchased.
    Change:
    */
-   public static void checkOut(String codeUPC)
+   public static void checkOut(String employeeID)
    {
-      // 
+      // Constant Declaration
+      final int NAME_INDEX = 0;
+      final int UPC_INDEX = 1;
+      final int PRICE_INDEX = 2;
+      final int QTY_INDEX = 3;
+      
+      // Variable Declaration
+      String scannedItems = "The list of items is: ";
+      String codeUPC = "";
+      double subtotal = 0;  
+      int newQty = 0; 
+      boolean itemFound = false;
+      
+      // Creating Scanner
+      Scanner sc = new Scanner(System.in);   
+      
+      do{
+      // prompt user for a UPC
+      System.out.print("Please Enter a UPC: ");
+         codeUPC = sc.nextLine();
+         // perform check to see if UPC exists
+            for(int rows = 0; rows < MAX_SIZE; rows++){
+               if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
+                  // print the name, current price & qty of item
+                  System.out.printf("The item name is %s. The current price of the item is $%s\n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX]);
+                  scannedItems = scannedItems + arrayInventory[rows][NAME_INDEX] + ", ";
+                  itemFound = true;
+                  
+                  // check qty
+                  if(Integer.parseInt(arrayInventory[rows][QTY_INDEX]) == 0){
+                     System.out.println("Inventory count kept at zero.");
+                  }
+                  else{
+                     // reduce inv count by 1
+                     try{
+                        newQty =  Integer.parseInt(arrayInventory[rows][QTY_INDEX]) - 1;
+                        arrayInventory[rows][QTY_INDEX] = ("" + newQty);
+                     } 
+                     catch (NumberFormatException e) {
+                         System.out.println("Invalid quantity format at row " + rows);
+                     }
+                  }
+                  
+                  // Calculate transaction
+                  try{
+                     subtotal += Double.parseDouble(arrayInventory[rows][PRICE_INDEX]);
+                     // subtotal check
+                     System.out.printf("Current Subtotal is $%.2f.\n", subtotal);
+                     
+                  }
+                  catch (NumberFormatException e) {
+                         System.out.println("Invalid price format at row " + rows);
+                     }
+      
+                  // print all items scanned thus far
+                  System.out.println(scannedItems);
+               }
+         } // end of for     
+         if (!itemFound){
+            System.out.println("The item does not exist. Try again.");
+         }
+      }
+      // loop until 'q' is entered 
+      while(!(codeUPC.equalsIgnoreCase("q")));
+         
+         // if statement
+            // error if UPC does not exist
+            // if it exists the name and price of the item should be displayed, along with a total of all items that have been scanned thus far.  
+                           
+               // if statement to check if the qty = 0 
+               // reduce inventory count by 1 if qty > 0 (change global array)
+               // calculate transaction
+               // add the item name to the string 
+
+      // end loop
+      // record transactions
+
    }
-}
+}//end of class
