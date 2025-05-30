@@ -117,8 +117,7 @@ public class SoftwareEngineeringTask
             {
                System.out.println("Login failed. Please try again. (Invalid Login Attempt)");
             } 
-            else if (loginResult == 1)
-            {
+            else if (loginResult == 1){
                System.out.println("Login successful (employee).");
                
                // MENU START (LOOP UNTIL QUIT)
@@ -128,8 +127,7 @@ public class SoftwareEngineeringTask
                   choice = sc.nextLine();
                   
                   // switch case for menu 
-                  switch (choice)
-                  {
+                  switch (choice){
                      case "1":
                         
                         do{
@@ -236,195 +234,157 @@ public class SoftwareEngineeringTask
                         break;
                      
                      case "7":
-                        // UNCOMMENT THIS WHEN I FIGURE OUT HOW TO MAKE CHECKOUT METHOD
                         checkOut(employeeID);
                         exitMenuLoop = true;
                         break;
-                  }
-               }
-            }
-            else if (loginResult == -1)
-            {
+                  } // end of switch
+               } // end of while
+            } // end of if
+            else if (loginResult == -1){
                System.out.println("Login successful (admin).");
                System.out.println("Select a number:\n1. Add Inventory\n2. Update Inventory\n3. Delete Inventory\n4. Check Inventory\n5. List all items\n6. List item\n7. Checkout\n8. Add an employee\n9. Edit an employee's details\n10. Activate/Deactivate an employee\n11. View all transactions\n12. View a transaction by transaction number");
                choice = sc.nextLine();
-               switch (choice)
-                  {
-                     case "1":
-                        
-                        do{
-                           System.out.println("Enter an 8-digit UPC Code (or Q to quit):");
-                           userInput = sc.nextLine();
-                           isValid = false; 
+               while(!exitMenuLoop){
+                  switch (choice){
+                        case "1":
                            
-                           if(!userInput.equalsIgnoreCase("q")){
-                              // try catch to determine if the UPC code is all numbers 
-                              try{
-                                 inputCheckNum = Integer.parseInt(userInput);
-                                 if (userInput.length() == 8){
-                                    // run method
-                                    addInventory(userInput);  
+                           do{
+                              System.out.println("Enter an 8-digit UPC Code (or Q to quit):");
+                              userInput = sc.nextLine();
+                              isValid = false; 
+                              
+                              if(!userInput.equalsIgnoreCase("q")){
+                                 // try catch to determine if the UPC code is all numbers 
+                                 try{
+                                    inputCheckNum = Integer.parseInt(userInput);
+                                    if (userInput.length() == 8){
+                                       // run method
+                                       addInventory(userInput);  
+                                    }
+                                    else{
+                                       System.out.println("UPC must be exactly 8 digits. Please try again.");
+                                    }
                                  }
-                                 else{
-                                    System.out.println("UPC must be exactly 8 digits. Please try again.");
+                                 catch(NumberFormatException e){
+                                    System.out.println("UPC must be an 8 digit number. Please try again.");
                                  }
-                              }
-                              catch(NumberFormatException e){
-                                 System.out.println("UPC must be an 8 digit number. Please try again.");
                               }
                            }
-                        }
-                        // check condition
-                        while(!userInput.equalsIgnoreCase("q")); 
-                                                 
-                        break;
-                        
-                     case "2":
-                     
-                        do{
-                           System.out.println("Enter an 8-digit UPC Code (or Q to quit):");
-                           userInput = sc.nextLine();
-                           isValid = false; 
+                           // check condition
+                           while(!userInput.equalsIgnoreCase("q")); 
+                                                    
+                           break;
                            
-                           if(!userInput.equalsIgnoreCase("q")){
-                              // try catch to determine if the UPC code is all numbers 
-                              try{
-                                 inputCheckNum = Integer.parseInt(userInput);
-                                 if (userInput.length() == 8){
-                                    // run method
-                                    updateInventory(userInput);  
+                        case "2":
+                        
+                           do{
+                              System.out.println("Enter an 8-digit UPC Code (or Q to quit):");
+                              userInput = sc.nextLine();
+                              isValid = false; 
+                              
+                              if(!userInput.equalsIgnoreCase("q")){
+                                 // try catch to determine if the UPC code is all numbers 
+                                 try{
+                                    inputCheckNum = Integer.parseInt(userInput);
+                                    if (userInput.length() == 8){
+                                       // run method
+                                       updateInventory(userInput);  
+                                    }
+                                    else{
+                                       System.out.println("UPC must be exactly 8 digits. Please try again.");
+                                    }
                                  }
-                                 else{
-                                    System.out.println("UPC must be exactly 8 digits. Please try again.");
+                                 catch(NumberFormatException e){
+                                    System.out.println("UPC must be an 8 digit number. Please try again.");
                                  }
-                              }
-                              catch(NumberFormatException e){
-                                 System.out.println("UPC must be an 8 digit number. Please try again.");
                               }
                            }
-                        }
-                        
-                        // check condition
-                        while(!userInput.equalsIgnoreCase("q"));
-                        // loop until Q is pressed to break the loop
-                        
-                        break; 
-                        
-                     case "3":
-                        
-                        System.out.println("Enter an 8 digit UPC Code");                     
-                        delete(sc.nextLine());
-                        break;
-                        
-                     case "4":
-                     
-                        do{
-                           System.out.println("Enter an 8-digit UPC Code (or Q to quit):");
-                           userInput = sc.nextLine();
-                           isValid = false; 
                            
-                           if(!userInput.equalsIgnoreCase("q")){
-                              // try catch to determine if the UPC code is all numbers 
-                              try{
-                                 inputCheckNum = Integer.parseInt(userInput);
-                                 if (userInput.length() == 8){
-                                    // run method
-                                    checkInv(userInput);  
+                           // check condition
+                           while(!userInput.equalsIgnoreCase("q"));
+                           // loop until Q is pressed to break the loop
+                           
+                           break; 
+                           
+                        case "3":
+                           
+                           System.out.println("Enter an 8 digit UPC Code");                     
+                           delete(sc.nextLine());
+                           break;
+                           
+                        case "4":
+                        
+                           do{
+                              System.out.println("Enter an 8-digit UPC Code (or Q to quit):");
+                              userInput = sc.nextLine();
+                              isValid = false; 
+                              
+                              if(!userInput.equalsIgnoreCase("q")){
+                                 // try catch to determine if the UPC code is all numbers 
+                                 try{
+                                    inputCheckNum = Integer.parseInt(userInput);
+                                    if (userInput.length() == 8){
+                                       // run method
+                                       checkInv(userInput);  
+                                    }
+                                    else{
+                                       System.out.println("UPC must be exactly 8 digits. Please try again.");
+                                    }
                                  }
-                                 else{
-                                    System.out.println("UPC must be exactly 8 digits. Please try again.");
+                                 catch(NumberFormatException e){
+                                    System.out.println("UPC must be an 8 digit number. Please try again.");
                                  }
-                              }
-                              catch(NumberFormatException e){
-                                 System.out.println("UPC must be an 8 digit number. Please try again.");
                               }
                            }
-                        }
+                           
+                           // check condition
+                           while(!userInput.equalsIgnoreCase("q"));
+                           break;
                         
-                        // check condition
-                        while(!userInput.equalsIgnoreCase("q"));
-                        break;
-                     
-                     case "5":
-                     
-                        listAll();
-                        break;
+                        case "5":
                         
-                     case "6":
-                        System.out.println("Enter an item name");
-                        listItem(sc.nextLine());
-                        break;
+                           listAll();
+                           break;
+                           
+                        case "6":
+                           System.out.println("Enter an item name");
+                           listItem(sc.nextLine());
+                           break;
+                        
+                        case "7":
+                           
+                           checkOut(employeeID);
+                           exitMenuLoop = true;
+                           break;
+                           
+                        // UNCOMMENT THIS WHEN I FIGURE OUT HOW TO IMPLEMENT THE REST OF THE METHODS
+                        /*case "8":
                      
-                     case "7":
-                        // UNCOMMENT THIS WHEN I FIGURE OUT HOW TO MAKE CHECKOUT METHOD
-                        checkOut(employeeID);
-                        exitMenuLoop = true;
-                        break;
-                  }
-
-               /*switch (choice)
-               {
-                  case 1:
-                     
-                     addInventory(String codeUPC);
-                     break;
-                     
-                  case 2:
-                  
-                     updateInventory(int specificTransaction);
-                     break;
-                     
-                  case 3:
-                  
-                     delete(String upcCode);
-                     break;
-                     
-                  case 4:
-                  
-                     checkInv(String upcCode);
-                     break;
-                  
-                  case 5:
-                  
-                     listAll();
-                     break;
-                     
-                  case 6:
-                  
-                     listItem(String itemName);
-                     break;
-                  
-                  case 7:
-                  
-                     checkOut(String upc);
-                     break;
-                  
-                  case 8:
-                  
-                     addEmployee(String employeeID);
-                     break;
-                  
-                  case 9:
-                  
-                     editDetails(String employeeID);
-                     break;
-                     
-                  case 10:
-                  
-                     changeEmployeeStatus(String employeeID);
-                     break;
-                     
-                  case 11:
-                  
-                     viewAllTransactions();
-                     break;
-                     
-                  case 12:
-                  
-                     viewTransactions(int specificTransaction);
-                     break;
-               }*/
-            }                  
+                           addEmployee(String employeeID);
+                           break;
+                        
+                        case "9":
+                        
+                           editDetails(String employeeID);
+                           break;
+                           
+                        case 10:
+                        
+                           changeEmployeeStatus(String employeeID);
+                           break;
+                           
+                        case 11:
+                        
+                           viewAllTransactions();
+                           break;
+                           
+                        case 12:
+                        
+                           viewTransactions(int specificTransaction);
+                           break;
+                     }*/
+               }// end of switch
+            }// end of while
          }      
       }// ends the loop
       // FileWriter method used to update the file after all changes are made               
@@ -466,8 +426,7 @@ public class SoftwareEngineeringTask
    Change:
    */
    
-   public static int login(String employeeID, String employeePIN)
-   {
+   public static int login(String employeeID, String employeePIN){
        
        // Constant Declaration
        final int ID_INDEX = 0;
@@ -526,62 +485,45 @@ public class SoftwareEngineeringTask
    Change: 
    */
    public static void writeFile(String fileName){
-      int numLines = 0;
-      if(fileName.equals(TRANSACTION_HISTORY))
-      {
-         numLines = TRANSACTION_PARAMETERS;
-      }
-      else if(fileName.equals(INVENTORY))
-      {
-         numLines = INVENTORY_PARAMETERS;
-      }
-      else if(fileName.equals(EMPLOYEE))
-      {
-         numLines = EMPLOYEE_PARAMETERS;
-      }
+       int numLines = 0;
+       String[][] targetArray = null;
+       
+       if(fileName.equals(TRANSACTION_HISTORY))
+       {
+           numLines = TRANSACTION_PARAMETERS;
+           targetArray = arrayTransactions;
+       }
+       else if(fileName.equals(INVENTORY))
+       {
+           numLines = INVENTORY_PARAMETERS;
+           targetArray = arrayInventory;
+       }
+       else if(fileName.equals(EMPLOYEE))
+       {
+           numLines = EMPLOYEE_PARAMETERS;
+           targetArray = arrayEmployees;
+       }
    
-      try (BufferedWriter out = new BufferedWriter(new FileWriter(fileName)))  // try-with-resources for safe closing
-      {
-         for(int rows = 0; rows < MAX_SIZE; rows++)
-         {
-            for(int cols = 0; cols < numLines; cols++)
-            {
-               if(fileName.equals(TRANSACTION_HISTORY))
+       try (BufferedWriter out = new BufferedWriter(new FileWriter(fileName)))  // try-with-resources for safe closing
+       {
+           for(int rows = 0; rows < MAX_SIZE; rows++)
+           {
+               for(int cols = 0; cols < numLines; cols++)
                {
-                  String currentValue = arrayTransactions[rows][cols]; //ADDITIONAL CODE
-                  if(currentValue == null || currentValue.equalsIgnoreCase("null")) //ADDITIONAL CODE
-                  {
-                     currentValue = ""; //ADDITIONAL CODE
-                  }
-                  out.write(currentValue + "\n"); //ADDITIONAL CODE
+                   String currentValue = targetArray[rows][cols];
+                   if(currentValue == null || currentValue.equalsIgnoreCase("null"))
+                   {
+                       currentValue = "";
+                   }
+                   out.write(currentValue + "\n");
                }
-               else if(fileName.equals(EMPLOYEE))
-               {
-                  String currentValue = arrayEmployees[rows][cols]; //ADDITIONAL CODE
-                  if(currentValue == null || currentValue.equalsIgnoreCase("null")) //ADDITIONAL CODE
-                  {
-                     currentValue = ""; //ADDITIONAL CODE
-                  }
-                  out.write(currentValue + "\n"); //ADDITIONAL CODE
-               }
-               else if(fileName.equals(INVENTORY))
-               {
-                  String currentValue = arrayInventory[rows][cols]; //ADDITIONAL CODE
-                  if(currentValue == null || currentValue.equalsIgnoreCase("null")) //ADDITIONAL CODE
-                  {
-                     currentValue = ""; //ADDITIONAL CODE
-                  }
-                  out.write(currentValue + "\n"); //ADDITIONAL CODE
-               }
-            }
-            out.write("***\n");
-         }
-      }
-      catch(IOException e)
-      {
-         // Intentionally left blank
-      }
-      System.out.println("written");
+               out.write("***\n");
+           }
+       }
+       catch(IOException e)
+       {
+       }
+       System.out.println("written");
    }
 
    
@@ -965,6 +907,7 @@ public class SoftwareEngineeringTask
          // perform check to see if UPC exists
             for(int rows = 0; rows < MAX_SIZE && !itemFound; rows++){
                if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
+                  /*PRINT*/ System.out.println("ENTERED IF STATEMENT");
                   
                   // print the name, current price & qty of item
                   System.out.printf("The item name is %s. The current price of the item is $%s\n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX]);
@@ -1004,6 +947,7 @@ public class SoftwareEngineeringTask
          if (!itemFound){
             System.out.println("The item does not exist. Try again.");
          }
+      /*PRINT*/ System.out.println("LOOP BACK TO BEGINNING");
       }
       // loop until 'q' is entered 
       while(!(codeUPC.equalsIgnoreCase("q")));
