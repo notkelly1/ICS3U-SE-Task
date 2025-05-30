@@ -591,7 +591,7 @@ public class SoftwareEngineeringTask{
        catch(IOException e)
        {
        }
-       System.out.println("written");
+       //System.out.println("written");
    }
 
    
@@ -1404,18 +1404,19 @@ public class SoftwareEngineeringTask{
    Description: This method prompts the user to input the UPC for items to be purchased, keeping a total of the price. If a UPC does not exist, an error is printed. If it does, the name, price, and total items scanned are displayed. If 'Q' is entered, a receipt is printed, outlining the transaction number, item names, and price. Inventory counts are reduced as items are purchased.
    Change:
    */
-   public static void checkOut(String employeeID)
-   {
+   public static void checkOut(String employeeID){
       // Constant Declaration
       final int NAME_INDEX = 0;
       final int UPC_INDEX = 1;
       final int PRICE_INDEX = 2;
       final int QTY_INDEX = 3;
+      final double HST = 0.13;
       
       // Variable Declaration
       String scannedItems = "The list of items is: ";
       String codeUPC = "";
-      double subtotal = 0;  
+      double subtotal = 0;
+      double totalPrice = 0;
       int newQty = 0; 
       boolean itemFound = false;
       
@@ -1432,7 +1433,7 @@ public class SoftwareEngineeringTask{
          // perform check to see if UPC exists
             for(int rows = 0; rows < MAX_SIZE && !itemFound; rows++){
                if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
-                  /*PRINT*/ System.out.println("ENTERED IF STATEMENT");
+                  ///*PRINT*/ System.out.println("ENTERED IF STATEMENT");
                   
                   // print the name, current price & qty of item
                   System.out.printf("The item name is %s. The current price of the item is $%s\n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX]);
@@ -1460,6 +1461,12 @@ public class SoftwareEngineeringTask{
                      // subtotal check
                      System.out.printf("Current Subtotal is $%.2f.\n", subtotal);
                      
+                     /*// Check for how much HST would be on this
+                     System.out.printf("How much 13%% HST would be on the subtotal $%.2f.\n", (subtotal * HST));
+                     
+                     // total price including 13% HST
+                     System.out.printf("Total price including 13%% HST: $%.2f.\n", (subtotal * (1 + HST)));*/
+                     
                   }
                   catch (NumberFormatException e) {
                          System.out.println("Invalid price format at row " + rows);
@@ -1469,13 +1476,21 @@ public class SoftwareEngineeringTask{
                   System.out.println(scannedItems);
                }
          } // end of for     
-         if (!itemFound){
+         if (!itemFound && !(codeUPC.equalsIgnoreCase("q"))){
             System.out.println("The item does not exist. Try again.");
          }
-      /*PRINT*/ System.out.println("LOOP BACK TO BEGINNING");
+      ///*PRINT*/ System.out.println("LOOP BACK TO BEGINNING");
       }
       // loop until 'q' is entered 
       while(!(codeUPC.equalsIgnoreCase("q")));
+      
+      // RUN AFTER WHILE LOOP ENDS
+      System.out.printf("\nRECEIPT\n");
+      // Check for how much HST would be on this
+      System.out.printf("Amount of 13%% HST on the subtotal $%.2f.\n", (subtotal * HST));
+                     
+      // total price including 13% HST
+      System.out.printf("Total price including 13%% HST: $%.2f.\n", (subtotal * (1 + HST)));
          
          // if statement
             // error if UPC does not exist
@@ -1489,5 +1504,5 @@ public class SoftwareEngineeringTask{
       // end loop
       // record transactions
 
-   }
+   }// end checkOut method
 }//end of class
