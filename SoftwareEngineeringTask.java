@@ -2,8 +2,7 @@
 import java.util.*;
 import java.lang.*;
 import java.io.*;
-public class SoftwareEngineeringTask
-{
+public class SoftwareEngineeringTask{
    // Constant Declaration
    public static final String TRANSACTION_HISTORY = "CheckoutTransactionsFile.txt";
    public static final String INVENTORY = "InventoryFile.txt";
@@ -18,18 +17,27 @@ public class SoftwareEngineeringTask
    // Variable Decalration
    public static String[][] arrayTransactions = new String[MAX_SIZE][TRANSACTION_PARAMETERS];
    public static String[][] arrayEmployees = new String[MAX_SIZE][EMPLOYEE_PARAMETERS];
-   public static String[][] arrayInventory = new String[MAX_SIZE][INVENTORY_PARAMETERS];
+   public static String[][] arrayInventory = new String[MAX_SIZE][INVENTORY_PARAMETERS];  
+   
    
    // main method
    public static void main(String[] args)
    {
       // Variable Declaration
+      String id = "";
       String employeeID = "";
       String employeePIN = "";
       String choice = "";
       String userInput = "";
+      String pin = "" ;                               
+      String firstName = "";               
+      String lastName = "";              
+      String title = "";              
+      String status = "";
+      String fileName = "";
       int loginResult = 0;
       int inputCheckNum;
+      int transactionNumber;
       boolean isValid;
       boolean exitSwitchLoop = false;
       boolean exitMenuLoop = false;
@@ -359,31 +367,90 @@ public class SoftwareEngineeringTask
                            break;
                            
                         // UNCOMMENT THIS WHEN I FIGURE OUT HOW TO IMPLEMENT THE REST OF THE METHODS
+                        case "8":
+
+                        System.out.print("Enter PIN: ");
+                        pin = sc.nextLine();
+
+                        System.out.print("Enter First Name: ");
+                        firstName = sc.nextLine();
+
+                        System.out.print("Enter Last Name: ");
+                        lastName = sc.nextLine();
+
+                        System.out.print("Enter Title: ");
+                        title = sc.nextLine();
+
+                        System.out.print("Enter Status (Active or Inactive): ");
+                        status = sc.nextLine();
+
+                        addEmployee( pin, firstName, lastName, title, status);
+                        break;
+
+                     case "9":
+
+                        System.out.print("Enter Employee ID to edit: ");
+                        id = sc.nextLine();
+                        editDetails(id);
+                        break;
+
+                     case "10":
+
+                        // Ask the user for the employee ID
+                        System.out.print("Enter the Employee ID to change status: ");
+                        employeeID = sc.nextLine();
+
+                        // Call the method to change the status
+                        changeEmployeeStatus(employeeID);                     
+                        break;
+
+                     case "11":
+
+                     viewAllTransactions();
+                     break;
+
+                     case "12":
+
+                      // Ask user which transaction to view
+                       System.out.print("Enter the transaction number you want to view: ");
+                       transactionNumber = sc.nextInt();
+
+                      // Call the method with the given transaction number
+                      viewTransactions(transactionNumber);                     
+                      break;
                         /*case "8":
-                     
-                           addEmployee(String employeeID);
+                      
+                           System.out.print("Enter new employee ID, : ");
+                           addEmployee(sc.nextLine(), );
                            break;
                         
                         case "9":
                         
-                           editDetails(String employeeID);
+                           System.out.print("Enter employee ID: ");
+                           editDetails(sc.nextLine());
                            break;
                            
-                        case 10:
+                        case "10":
                         
-                           changeEmployeeStatus(String employeeID);
+                           System.out.print("Enter employee ID: ");
+                           changeEmployeeStatus(sc.nextLine());
                            break;
                            
-                        case 11:
+                        case "11":
                         
                            viewAllTransactions();
                            break;
                            
-                        case 12:
-                        
-                           viewTransactions(int specificTransaction);
-                           break;
-                     }*/
+                        case "12":
+                           
+                           try{
+                              System.out.print("Enter the Transaction Number: ");
+                              viewTransactions(sc.nextInt());
+                           }
+                           catch(InputMismatchException e){
+                              System.out.print("Bad Input (not a number)");
+                           }
+                           break;*/
                }// end of switch
             }// end of while
          }      
@@ -582,14 +649,145 @@ public class SoftwareEngineeringTask
    /*
    Name: addEmployee
    Return Type: void
-   Parameters: employeeID
+   Parameters: String pin, String firstName, String lastName, String title, String status
    Description: This method will assign the next available Employee ID number and prompt the administrator to provide: 
    the PIN, first name, last name, title and status of the new employee, updating all information to their respective arrays
    Change:
    */
-   public static void addEmployee(String employeeID)
-   {
    
+   // Lauren's Code
+   public static void addEmployee(String pin, String firstName, String lastName, String title, String status) 
+   {
+       String[] lines = new String[1000];
+       int totalLines = 0;
+       String line;
+       int start = -1;
+       int maxID = 0;
+       int newID = 0;
+       String employeeID = "";
+       boolean isNumber;
+
+       // Step 1: Read the file into the lines array
+       try 
+       {
+           BufferedReader in = new BufferedReader(new FileReader("EmployeeFile.txt"));
+           while ((line = in.readLine()) != null) 
+           {
+               lines[totalLines] = line;
+               totalLines++;
+           }
+           in.close();
+       } 
+       catch (IOException e) 
+       {
+           System.out.println("Error reading file.");
+           return;
+       }
+
+       // Step 2: Find the first empty slot pattern: ***, "", ***
+       for (int j = 0; j < totalLines - 5; j++) 
+       {
+             if (lines[j].equals("") && lines[j + 1].equals("") && lines[j + 2].equals("") && lines[j + 3].equals("") && lines[j + 4].equals("") && lines[j + 5].equals("***")) 
+             {
+                 start = j;
+             }
+       }
+
+       if (start == -1) 
+       {
+           System.out.println("No available employee slot.");
+           return;
+       }
+
+       System.out.println("Found slot at line: " + start);
+
+       // Step 3: Find the highest existing employee ID (5-digit number)
+       for (int i = 0; i < totalLines; i++) 
+       {
+           line = lines[i];
+           if (line != null && line.length() == 5) 
+           {
+               isNumber = true;
+               for (int k = 0; k < 5; k++) 
+               {
+                   char c = line.charAt(k);
+                   if (c < '0' || c > '9') 
+                   {
+                       isNumber = false;
+                   }
+               }
+               if (isNumber) 
+               {
+                   int id = Integer.parseInt(line);
+                   if (id > maxID) 
+                   {
+                       maxID = id;
+                   }
+               }
+           }
+       }
+
+       // Step 4: Generate new employee ID with leading zeros
+       newID = maxID + 1;
+       if (newID < 10) 
+       {
+           employeeID = "0000" + newID;
+       } 
+       else if (newID < 100) 
+       {
+           employeeID = "000" + newID;
+       } 
+       else if (newID < 1000) 
+       {
+           employeeID = "00" + newID;
+       } 
+       else if (newID < 10000) 
+       {
+           employeeID = "0" + newID;
+       } 
+       else 
+       {
+           employeeID = "" + newID;
+       }
+
+       System.out.println("Writing employee ID: " + employeeID);
+
+       // Step 5: Create new employee info array
+       String[] newEmployeeInfo = new String[5];
+       newEmployeeInfo[0] = employeeID;
+       newEmployeeInfo[1] = pin;
+       newEmployeeInfo[2] = firstName + " " + lastName;
+       newEmployeeInfo[3] = title;
+       newEmployeeInfo[4] = status;
+
+       // Step 6: Copy new employee info into lines array using a loop
+       int idx = 0;
+       for (int i = start; i < start + 5; i++) 
+       {
+           lines[i] = newEmployeeInfo[idx];
+           idx++;
+       }
+       // lines[start + 5] should remain "***" (leave untouched)
+
+       // Step 7: Write the updated lines back to the file
+       try 
+       {
+           BufferedWriter bw = new BufferedWriter(new FileWriter("EmployeeFile.txt"));
+           for (int i = 0; i < totalLines; i++) 
+           {
+               if (lines[i] != null) 
+               {
+                   bw.write(lines[i]);
+               }
+               bw.newLine();
+           }
+           bw.close();
+           System.out.println("Employee added successfully with ID: " + employeeID);
+       } 
+       catch (IOException e) 
+       {
+           System.out.println("Error writing to file.");
+       }
    }
    /*
    Name: editDetails
@@ -598,9 +796,112 @@ public class SoftwareEngineeringTask
    Description: This method prompts the administrator for the employee ID to edit and then checks and compares if it exists. If it matches, the system should allow the administrator to change the PIN, First name, Last name, and Title; if not, an error message will be printed.
    Change:
    */
-   public static void editDetails(String employeeID)
+    public static void editDetails(String employeeID) 
    {
+      File inputFile = new File("EmployeeFile.txt");
+      File tempFile = new File("employees_temp.txt");
 
+      try 
+      {
+         BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+         BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+         Scanner sc = new Scanner(System.in);
+
+         String line;
+         boolean found = false;
+         String currentPIN;
+         String newPin;
+         String currentName;
+         String newName;
+         String currentTitle;
+         String newTitle;
+         String currentStatus;
+         String boundary;
+
+         while ((line = reader.readLine()) != null) 
+         {
+            if (line.equals(employeeID)) 
+            {
+               found = true;
+
+               writer.write(line); // write employeeID
+               writer.newLine();
+
+               // PIN
+               currentPIN = reader.readLine();
+               System.out.println("Current PIN: " + currentPIN);
+               System.out.print("Enter new PIN (or Enter to keep): ");
+               newPin = sc.nextLine();
+               if (newPin.equals("")) 
+               {
+                  newPin = currentPIN;
+               }
+               writer.write(newPin);
+               writer.newLine();
+
+               // Name
+               currentName = reader.readLine();
+               System.out.println("Current Name: " + currentName);
+               System.out.print("Enter new Name (or Enter to keep): ");
+               newName = sc.nextLine();
+               if (newName.equals("")) 
+               {
+                  newName = currentName;
+               }
+               writer.write(newName);
+               writer.newLine();
+
+               // Title
+               currentTitle = reader.readLine();
+               System.out.println("Current Title: " + currentTitle);
+               System.out.print("Enter new Title (or Enter to keep): ");
+               newTitle = sc.nextLine();
+               if (newTitle.equals("")) 
+               {
+                  newTitle = currentTitle;
+               }
+               writer.write(newTitle);
+               writer.newLine();
+
+               // Status (do not change)
+               currentStatus = reader.readLine();
+               writer.write(currentStatus);
+               writer.newLine();
+
+               // Write the boundary line ***
+               boundary = reader.readLine();
+               writer.write(boundary);
+               writer.newLine();
+            } 
+            else 
+            {
+               // just copy line to output
+               writer.write(line);
+               writer.newLine();
+            }
+         }
+
+         if (!found) 
+         {
+            System.out.println("Employee ID not found!");
+         } 
+         else 
+         {
+            System.out.println("Employee details updated.");
+         }
+      } 
+      catch (IOException e) 
+      {
+         System.out.println("Error processing the file.");
+         e.printStackTrace();
+      }
+
+      // Replace original file with updated temp file
+      if (tempFile.exists()) 
+      {
+         inputFile.delete();
+         tempFile.renameTo(inputFile);
+      }
    }
    
    /*
@@ -610,9 +911,93 @@ public class SoftwareEngineeringTask
    Description: This method changes the status of an employee in arrayStatus
    Change:
    */
-   public static void changeEmployeeStatus(String employeeID)
+   public static void changeEmployeeStatus(String employeeID) 
    {
+      File originalFile = new File("EmployeeFile.txt");
+      File updatedFile = new File("TempEmployeeFile.txt");
 
+      // Declare variables before the loop
+      String id = "";
+      String pin = "";
+      String name = "";
+      String jobTitle = "";
+      String status = "";
+      String separator = "";
+
+      boolean found = false;
+
+      try 
+      {
+         BufferedReader reader = new BufferedReader(new FileReader(originalFile));
+         BufferedWriter writer = new BufferedWriter(new FileWriter(updatedFile));
+         String line;
+
+         while ((line = reader.readLine()) != null) 
+         {
+            // Use the first line as ID
+            id = line;
+            pin = reader.readLine();
+            name = reader.readLine();
+            jobTitle = reader.readLine();
+            status = reader.readLine();
+            separator = reader.readLine(); // should be ***
+
+            // If it's the employee we're updating
+            if (id.equals(employeeID)) 
+            {
+               System.out.println("Found employee: " + name);
+               System.out.println("Old status: " + status);
+
+               // Change the status
+               if (status.equalsIgnoreCase("Active")) 
+               {
+                  status = "Inactive";
+               } 
+               else 
+               {
+                  status = "Active";
+               }
+               System.out.println("New status: " + status);
+               found = true;
+            }   
+            // Write the (possibly updated) employee info to the new file
+            writer.write(id); writer.newLine();
+            writer.write(pin); writer.newLine();
+            writer.write(name); writer.newLine();
+            writer.write(jobTitle); writer.newLine();
+            writer.write(status); writer.newLine();
+            writer.write("***"); writer.newLine();
+         }
+         reader.close();
+         writer.close();
+
+         // Replace original file with updated one
+         if (originalFile.delete()) 
+         {
+            if (updatedFile.renameTo(originalFile)) 
+            {
+               System.out.println("Employee file updated successfully.");
+            } 
+            else 
+            {
+               System.out.println("Could not rename the updated file.");
+            }
+         } 
+         else 
+         {
+            System.out.println("Could not delete the original file.");
+         }
+
+         if (!found) 
+         {
+            System.out.println("Employee ID " + employeeID + " not found.");
+         }
+
+      } 
+      catch (IOException e) 
+      {
+         System.out.println("Something went wrong: " + e.getMessage());
+      }
    }
    
    /*
@@ -622,11 +1007,59 @@ public class SoftwareEngineeringTask
    Description: This method reads the CheckoutTransactionsFile.txt, then prints all the transactions from the file
    Change:
    */
-   public static void viewAllTransactions()
-   {
+   public static void viewAllTransactions(){
+      // Constant Declaration
+      final int TRANSACTION_INDEX = 0;
+      final int ID_INDEX = 1;
+      final int ITEMS_INDEX = 2;
+      final int ITEMPRICE_INDEX = 3;
+      final int SUBTOTAL_INDEX = 4;
+      final int TAXES_INDEX = 5;
+      final int TOTAL_INDEX = 6;
+      
+         //System.out.println("Transaction # | Employee ID | Items Sold | Price of Items Sold | Subtotal Cost | Taxes | Total Cost")
+         //print the array (TRANSACTIONS)
+         for(int rows = 0; rows < MAX_SIZE; rows++){
+            System.out.printf("Transaction #: %s\n", arrayTransactions[rows][TRANSACTION_INDEX]);
+            System.out.printf("Employee ID: %s\n", arrayTransactions[rows][ID_INDEX]);
+            System.out.printf("Items Sold: %s\n", arrayTransactions[rows][ITEMS_INDEX]);
+            System.out.printf("Price of Items Sold: %s\n", arrayTransactions[rows][ITEMPRICE_INDEX]);
+            System.out.printf("Subtotal Cost: %s\n", arrayTransactions[rows][SUBTOTAL_INDEX]);
+            System.out.printf("Taxes: %s\n", arrayTransactions[rows][TAXES_INDEX]);
+            System.out.printf("Total Cost: %s\n", arrayTransactions[rows][TOTAL_INDEX]);
+            
+            System.out.println("\n");
+         }
+      }
    
-   }
-   
+   /*{
+      File file = new File("CheckoutTransactionsFile.txt");
+
+       if (!file.exists()) 
+       {
+           System.out.println("No transactions found.");
+           return;
+       }
+
+       try 
+       {
+           BufferedReader reader = new BufferedReader(new FileReader(file));
+           String line;
+
+           System.out.println("=== All Transactions ===");
+
+           while ((line = reader.readLine()) != null) 
+           {
+               System.out.println(line);
+           }
+
+           reader.close();
+       } 
+       catch (IOException e) 
+       {
+         System.out.println(e + "  Problem reading " + file);       
+       }*/ 
+          
    /*
    Name: viewTransactions
    Return Type: void
@@ -634,9 +1067,98 @@ public class SoftwareEngineeringTask
    Description: This method asks the user for the transaction they want to view, then reads the specific transaction from the CheckoutTransactionsFile, only printing the specific transaction
    Change:
    */
-   public static void viewTransactions(int specificTransaction)
-   {
+   public static void viewTransactions(int specificTransaction){    
+      // Constant Declaration
+      final int TRANSACTION_INDEX = 0;
+      final int ID_INDEX = 1;
+      final int ITEMS_INDEX = 2;
+      final int ITEMPRICE_INDEX = 3;
+      final int SUBTOTAL_INDEX = 4;
+      final int TAXES_INDEX = 5;
+      final int TOTAL_INDEX = 6;
+      
+      // Variable Declaration
+      int rows = 0;
+      String line;
+      boolean inTransaction = false;
+      boolean found = false;
+      boolean done = false;
+      
+      File file = new File("CheckoutTransactionsFile.txt");
 
+      if (!file.exists()) 
+      {
+         System.out.println("No transactions found.");
+         return;
+      }
+
+      try{
+         BufferedReader reader = new BufferedReader(new FileReader(file));
+
+         while (!done) 
+         {
+            line = reader.readLine();
+
+            if (line == null) 
+            {
+               // end of file
+               done = true;
+            } 
+            else 
+            {
+               if (inTransaction == false) 
+               {
+                  // try to read the transaction number
+                  try 
+                  {
+                     int transactionNum = Integer.parseInt(line);
+                     if (transactionNum == specificTransaction) 
+                     {
+                        inTransaction = true;
+                        found = true;
+                        System.out.println(line); // print transaction number
+                        
+                        // prints the corresponding line in the array
+                        rows = transactionNum - 1;
+                        System.out.printf("Transaction #: %s\n", arrayTransactions[rows][TRANSACTION_INDEX]);
+                        System.out.printf("Employee ID: %s\n", arrayTransactions[rows][ID_INDEX]);
+                        System.out.printf("Items Sold: %s\n", arrayTransactions[rows][ITEMS_INDEX]);
+                        System.out.printf("Price of Items Sold: %s\n", arrayTransactions[rows][ITEMPRICE_INDEX]);
+                        System.out.printf("Subtotal Cost: %s\n", arrayTransactions[rows][SUBTOTAL_INDEX]);
+                        System.out.printf("Taxes: %s\n", arrayTransactions[rows][TAXES_INDEX]);
+                        System.out.printf("Total Cost: %s\n", arrayTransactions[rows][TOTAL_INDEX]);
+                        
+                     }
+                  } 
+                  catch (NumberFormatException e) 
+                  {
+                     // not a number, just ignore
+                  }
+               } 
+               else 
+               {
+                  // we're inside the transaction
+                  System.out.println(line);
+                  if (line.equals("***")) 
+                  {
+                  done = true; // stop after end of this transaction
+                  }
+               }
+            }
+         }
+
+         if (found == false) 
+         {
+            System.out.println("Transaction #" + specificTransaction + " not found.");
+         }
+
+         reader.close();
+
+      } 
+      catch (IOException e) 
+      {
+         System.out.println("Error reading file.");
+      }    
    }
    
    /*
