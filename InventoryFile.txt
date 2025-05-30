@@ -1,12 +1,12 @@
 Carrots
 24681357
 3.14
-33
+32
 ***
 Apples
 23578102
 2.45
-39
+38
 ***
 tung tung sahur
 11111111
@@ -16,7 +16,16 @@ tung tung sahur
 cigarette
 12341234
 20
+<<<<<<< Updated upstream
 5
+=======
+2
+***
+
+
+
+
+>>>>>>> Stashed changes
 ***
 
 

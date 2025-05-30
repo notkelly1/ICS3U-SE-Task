@@ -21,8 +21,7 @@ public class SoftwareEngineeringTask
    public static String[][] arrayInventory = new String[MAX_SIZE][INVENTORY_PARAMETERS];
    
    // main method
-   public static void main(String[] args)
-   {
+   public static void main(String[] args){
       // Variable Declaration
       String employeeID = "";
       String employeePIN = "";
@@ -67,17 +66,14 @@ public class SoftwareEngineeringTask
       Scanner sc = new Scanner(System.in);
 
       // loop the login method if the input is not quit 
-      while(!(employeeID.equalsIgnoreCase("quit")) && loginResult != 1 && loginResult != -1)
-      {
-         do
-         {
+      while(!(employeeID.equalsIgnoreCase("quit")) && loginResult != 1 && loginResult != -1){
+         do{
             // prompt user for login
             System.out.println("Please enter your employee ID");
             employeeID = sc.nextLine();
             isValid = false;
             
-            try
-            {
+            try{
                // check input in try catch to verify if it is numerical
                inputCheckNum = Integer.parseInt(employeeID);
                
@@ -90,21 +86,18 @@ public class SoftwareEngineeringTask
                   System.out.println("Employee IDs must be a 5-digits. Please try again."); 
                }   
             }
-            catch(NumberFormatException e)
-            {
-               if (!(employeeID.equalsIgnoreCase("quit")))
-               {
+            catch(NumberFormatException e){
+               if (!(employeeID.equalsIgnoreCase("quit"))){
                   System.out.println("Employee IDs must be a 5-digit number. Please try again.");
                }
             }   
-         } 
+         } // end of do
          while((!isValid) && !(employeeID.equalsIgnoreCase("quit")) && loginResult != 1 && loginResult != -1);  
          
          // reset to use it for other checks
          inputCheckNum = 0;
          
-         if(!(employeeID.equalsIgnoreCase("quit")))
-         {  
+         if(!(employeeID.equalsIgnoreCase("quit"))){  
             System.out.println("Please enter your PIN");
             employeePIN = sc.nextLine();
                         
@@ -454,9 +447,9 @@ public class SoftwareEngineeringTask
             System.out.print(arrayEmployees[rows][cols] + " ");
             }
             System.out.println("new employee\n");
-      } 
-   } 
-   // END OF MAIN METHOD
+         } 
+      } // end of while
+   } // END OF MAIN METHOD
      
    /*
    Name: login
@@ -466,25 +459,31 @@ public class SoftwareEngineeringTask
    Change:
    */
    
+<<<<<<< Updated upstream
    public static int login(String employeeID, String employeePIN)
    {
        
+=======
+    public static int login(String employeeID, String employeePIN)
+   {
+
+>>>>>>> Stashed changes
        // Constant Declaration
        final int ID_INDEX = 0;
        final int PIN_INDEX = 1;
        final int ACTIVITY_INDEX = 4; 
-       
+
        // Variable Declaration
        int rows = 0;
        int loginType = 0;
        boolean endLogic = false;
-   
+
        // Check for admin login first
        if(employeeID.equalsIgnoreCase(ADMIN_ID) && employeePIN.equalsIgnoreCase(ADMIN_PIN))
        {
            loginType = -1; // admin login
        }
-   
+
        while (!endLogic && rows < MAX_SIZE) 
        {
            // Check if ID cell is not null before comparing
@@ -514,7 +513,7 @@ public class SoftwareEngineeringTask
                rows++; // move to next row
            }
        }
-   
+
        return loginType;
    }
    
@@ -959,6 +958,7 @@ public class SoftwareEngineeringTask
       
       do{
       // prompt user for a UPC
+      itemFound = false;
       System.out.print("Please Enter a UPC: ");
          codeUPC = sc.nextLine();
          
