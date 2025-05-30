@@ -111,8 +111,7 @@ public class SoftwareEngineeringTask{
          // reset to use it for other checks
          inputCheckNum = 0;
          
-         if(!(employeeID.equalsIgnoreCase("quit")))
-         {  
+         if(!(employeeID.equalsIgnoreCase("quit"))){  
             System.out.println("Please enter your PIN");
             employeePIN = sc.nextLine();
                         
@@ -1543,11 +1542,10 @@ public class SoftwareEngineeringTask{
       }
       else
       {
-          System.out.println("Error: item not found... :fearful:");
-      }
-      
-      
-      
+          if(!(codeUPC.equalsIgnoreCase("q"))){
+             System.out.println("Error: item not found... :fearful:");
+          }
+      }  
          
          // if statement
             // error if UPC does not exist
