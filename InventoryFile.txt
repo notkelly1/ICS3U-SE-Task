@@ -6,26 +6,17 @@ Carrots
 Apples
 23578102
 2.45
-38
-***
-tung tung sahur
-11111111
-1234
-0
-***
-cigarette
-12341234
-20
-<<<<<<< Updated upstream
-5
-=======
-2
+37
 ***
 
 
 
 
->>>>>>> Stashed changes
+***
+welly kang
+67896789
+23.05
+85
 ***
 
 

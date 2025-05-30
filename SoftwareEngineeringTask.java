@@ -242,9 +242,10 @@ public class SoftwareEngineeringTask
             } // end of if
             else if (loginResult == -1){
                System.out.println("Login successful (admin).");
-               System.out.println("Select a number:\n1. Add Inventory\n2. Update Inventory\n3. Delete Inventory\n4. Check Inventory\n5. List all items\n6. List item\n7. Checkout\n8. Add an employee\n9. Edit an employee's details\n10. Activate/Deactivate an employee\n11. View all transactions\n12. View a transaction by transaction number");
-               choice = sc.nextLine();
+               // start of while
                while(!exitMenuLoop){
+                  System.out.println("Select a number:\n1. Add Inventory\n2. Update Inventory\n3. Delete Inventory\n4. Check Inventory\n5. List all items\n6. List item\n7. Checkout\n8. Add an employee\n9. Edit an employee's details\n10. Activate/Deactivate an employee\n11. View all transactions\n12. View a transaction by transaction number");
+                  choice = sc.nextLine();
                   switch (choice){
                         case "1":
                            
