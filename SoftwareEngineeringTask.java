@@ -961,9 +961,11 @@ public class SoftwareEngineeringTask
       // prompt user for a UPC
       System.out.print("Please Enter a UPC: ");
          codeUPC = sc.nextLine();
+         
          // perform check to see if UPC exists
             for(int rows = 0; rows < MAX_SIZE && !itemFound; rows++){
                if(codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
+                  
                   // print the name, current price & qty of item
                   System.out.printf("The item name is %s. The current price of the item is $%s\n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX]);
                   scannedItems = scannedItems + arrayInventory[rows][NAME_INDEX] + ", ";
