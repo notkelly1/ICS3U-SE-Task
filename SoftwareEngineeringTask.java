@@ -14,10 +14,11 @@ public class SoftwareEngineeringTask{
    public static final String ADMIN_PIN = "2468";
    public static final String ADMIN_ID = "00000"; 
    
-   // Variable Decalration
+   // Variable Declaration
    public static String[][] arrayTransactions = new String[MAX_SIZE][TRANSACTION_PARAMETERS];
    public static String[][] arrayEmployees = new String[MAX_SIZE][EMPLOYEE_PARAMETERS];
    public static String[][] arrayInventory = new String[MAX_SIZE][INVENTORY_PARAMETERS];  
+   public static String employeeID = "";
    
    
    // main method
@@ -25,7 +26,6 @@ public class SoftwareEngineeringTask{
    {
       // Variable Declaration
       String id = "";
-      String employeeID = "";
       String employeePIN = "";
       String choice = "";
       String userInput = "";
@@ -1412,13 +1412,30 @@ public class SoftwareEngineeringTask{
       final int QTY_INDEX = 3;
       final double HST = 0.13;
       
+      // transaction array constants
+      final int TRANSACTION_INDEX = 0;
+      final int ID_INDEX = 1;
+      final int ITEMS_INDEX = 2;
+      final int ITEMPRICE_INDEX = 3;
+      final int SUBTOTAL_INDEX = 4;
+      final int TAXES_INDEX = 5;
+      final int TOTAL_INDEX = 6;
+      
       // Variable Declaration
       String scannedItems = "The list of items is: ";
+      String scannedPrice = "";
       String codeUPC = "";
       double subtotal = 0;
       double totalPrice = 0;
       int newQty = 0; 
+      int newTransaction = 0;
       boolean itemFound = false;
+      
+      int itemIndex = 0;
+      boolean itemUpdated = false;
+      
+      // STUPID CHECK DELETE LATER
+      //System.out.println(employeeID);
       
       // Creating Scanner
       Scanner sc = new Scanner(System.in);   
@@ -1438,7 +1455,9 @@ public class SoftwareEngineeringTask{
                   // print the name, current price & qty of item
                   System.out.printf("The item name is %s. The current price of the item is $%s\n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX]);
                   scannedItems = scannedItems + arrayInventory[rows][NAME_INDEX] + ", ";
+                  scannedPrice = scannedPrice + arrayInventory[rows][PRICE_INDEX] + ", ";
                   itemFound = true;
+                  itemIndex = rows;
                   
                   // check qty
                   if(Integer.parseInt(arrayInventory[rows][QTY_INDEX]) == 0){
@@ -1491,6 +1510,44 @@ public class SoftwareEngineeringTask{
                      
       // total price including 13% HST
       System.out.printf("Total price including 13%% HST: $%.2f.\n", (subtotal * (1 + HST)));
+      
+      // save the price/HST arrayTransactions
+         
+
+      if (itemFound == true)
+      {
+          // UPC/item exists: print out the name, priceof item, and total of all items that have been scanned thus far
+          System.out.printf("Item name: %s\n", arrayInventory[itemIndex][NAME_INDEX]);
+          System.out.printf("1 of %s costs $%.2f.\n", arrayTransactions[itemIndex][ITEMPRICE_INDEX]);
+          System.out.printf("So far, %d items have been scanned so far.\n", arrayTransactions[itemIndex][ITEMS_INDEX]);
+          
+          /*// check if qty = 0
+          if (arrayInventory[itemIndex][QTY_INDEX] <= 0)
+          {
+          }
+          else
+          {
+              arrayInventory[itemIndex][QTY_INDEX]--;
+          }*/
+          
+          // update arrays here (?)
+         for (int i= 0; i < MAX_SIZE; i++) {
+             if (arrayTransactions[i][TRANSACTION_INDEX] == null && !itemUpdated) {
+                 newTransaction = Integer.parseInt(arrayTransactions[i-1][TRANSACTION_INDEX]) + 1;
+                 arrayTransactions[i][ID_INDEX] = employeeID;
+                 arrayTransactions[i][ITEMS_INDEX] = scannedItems;
+                 arrayTransactions[i][PRICE_INDEX] = scannedPrice;
+                 itemUpdated = true;
+             }
+         }
+      }
+      else
+      {
+          System.out.println("Error: item not found... :fearful:");
+      }
+      
+      
+      
          
          // if statement
             // error if UPC does not exist
