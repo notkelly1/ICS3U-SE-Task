@@ -15,26 +15,6 @@ public class SoftwareEngineeringTask{
    public static final String ADMIN_PIN = "2468";
    public static final String ADMIN_ID = "00000";
 
-   // Global Constants for array indices - these were previously local to methods
-   //public static final int ID_INDEX = 0; // Used in login, viewAllTransactions, viewTransactions
-   public static final int PIN_INDEX = 1; // Used in login
-   public static final int ACTIVITY_INDEX = 4; // Used in login
-
-   public static final int NAME_INDEX = 0; // Used in Inventory methods (add, update, delete, check, list)
-   public static final int UPC_INDEX = 1; // Used in Inventory methods (add, update, delete, check, list, checkout)
-   public static final int PRICE_INDEX = 2; // Used in Inventory methods (add, update, check, list, checkout)
-   public static final int QTY_INDEX = 3; // Used in Inventory methods (add, update, check, list, checkout)
-   
-   public static final double HST = 0.13; // Used in checkout
-   public static final int TRANSACTION_INDEX = 0;
-   public static final int ID_INDEX = 1;
-   public static final int ITEMS_INDEX = 2; // Used in viewAllTransactions, viewTransactions, checkOut
-   public static final int ITEMPRICE_INDEX = 3; // Used in viewAllTransactions, viewTransactions, checkOut
-   public static final int SUBTOTAL_INDEX = 4; // Used in viewAllTransactions, viewTransactions, checkOut
-   public static final int TAXES_INDEX = 5; // Used in viewAllTransactions, viewTransactions, checkOut
-   public static final int TOTAL_INDEX = 6; // Used in viewAllTransactions, viewTransactions, checkOut
-   
-
    // Variable Declaration
    public static String[][] arrayTransactions = new String[MAX_SIZE][TRANSACTION_PARAMETERS];
    public static String[][] arrayEmployees = new String[MAX_SIZE][EMPLOYEE_PARAMETERS];
@@ -43,8 +23,7 @@ public class SoftwareEngineeringTask{
 
 
    // main method
-   public static void main(String[] args)
-   {
+   public static void main(String[] args){
       // Variable Declaration
       String id = "";
       String employeePIN = "";
@@ -96,8 +75,7 @@ public class SoftwareEngineeringTask{
       Scanner sc = new Scanner(System.in);
 
       // loop the login method if the input is not quit
-      while(!(employeeID.equalsIgnoreCase("quit")) && loginResult != 1 && loginResult != -1)
-      {
+      while(!(employeeID.equalsIgnoreCase("quit")) && loginResult != 1 && loginResult != -1){
          do
          {
             // prompt user for login
@@ -319,7 +297,7 @@ public class SoftwareEngineeringTask{
                                        // run method
                                        updateInventory(userInput);
                                     }
-                                    else{
+                                   else{
                                        System.out.println("UPC must be exactly 8 digits. Please try again.");
                                     }
                                  }
@@ -386,7 +364,6 @@ public class SoftwareEngineeringTask{
                            exitMenuLoop = true;
                            break;
 
-                        // UNCOMMENT THIS WHEN I FIGURE OUT HOW TO IMPLEMENT THE REST OF THE METHODS
                         case "8":
 
                         System.out.print("Enter PIN: ");
@@ -483,10 +460,10 @@ public class SoftwareEngineeringTask{
 
    public static int login(String employeeID, String employeePIN){
 
-       // Constant Declaration (These are now global constants, removed local final declaration)
-       // final int ID_INDEX = 0;
-       // final int PIN_INDEX = 1;
-       // final int ACTIVITY_INDEX = 4;
+       // Constant Declaration
+       final int ID_INDEX = 0;
+       final int PIN_INDEX = 1;
+       final int ACTIVITY_INDEX = 4;
 
        // Variable Declaration
        int rows = 0;
@@ -612,7 +589,7 @@ public class SoftwareEngineeringTask{
 
        try (BufferedReader in = new BufferedReader(new FileReader(fileName))) {
            while ((line = in.readLine()) != null) {
-               //line = line.trim();
+               line = line.trim(); // Trim whitespace from read line
 
                // If it's the record separator or an empty line, skip logic without using continue
                if (!line.equals("***") && !line.equals("")) {
@@ -741,11 +718,11 @@ public class SoftwareEngineeringTask{
 
        // Step 5: Create new employee info array
        String[] newEmployeeInfo = new String[5];
-       newEmployeeInfo[ID_INDEX] = employeeID; // Used global constant
-       newEmployeeInfo[PIN_INDEX] = pin; // Used global constant
+       newEmployeeInfo[0] = employeeID;
+       newEmployeeInfo[1] = pin;
        newEmployeeInfo[2] = firstName + " " + lastName;
        newEmployeeInfo[3] = title;
-       newEmployeeInfo[ACTIVITY_INDEX] = status; // Used global constant
+       newEmployeeInfo[4] = status;
 
        // Step 6: Copy new employee info into lines array using a loop
        int idx = 0;
@@ -995,25 +972,25 @@ public class SoftwareEngineeringTask{
    Change:
    */
    public static void viewAllTransactions(){
-      // Constant Declaration (These are now global constants, removed local final declaration)
-      // final int TRANSACTION_INDEX = 0;
-      // final int ID_INDEX = 1;
-      // final int ITEMS_INDEX = 2;
-      // final int ITEMPRICE_INDEX = 3;
-      // final int SUBTOTAL_INDEX = 4;
-      // final int TAXES_INDEX = 5;
-      // final int TOTAL_INDEX = 6;
+      // Constant Declaration
+      final int TRANSACTION_INDEX = 0;
+      final int ID_INDEX = 1;
+      final int ITEMS_INDEX = 2;
+      final int ITEMPRICE_INDEX = 3;
+      final int SUBTOTAL_INDEX = 4;
+      final int TAXES_INDEX = 5;
+      final int TOTAL_INDEX = 6;
 
          //System.out.println("Transaction # | Employee ID | Items Sold | Price of Items Sold | Subtotal Cost | Taxes | Total Cost")
          //print the array (TRANSACTIONS)
          for(int rows = 0; rows < MAX_SIZE; rows++){
-            System.out.printf("Transaction #: %s\n", arrayTransactions[rows][TRANSACTION_INDEX]); // Used global constant
-            System.out.printf("Employee ID: %s\n", arrayTransactions[rows][ID_INDEX]); // Used global constant
-            System.out.printf("Items Sold: %s\n", arrayTransactions[rows][ITEMS_INDEX]); // Used global constant
-            System.out.printf("Price of Items Sold: %s\n", arrayTransactions[rows][ITEMPRICE_INDEX]); // Used global constant
-            System.out.printf("Subtotal Cost: %s\n", arrayTransactions[rows][SUBTOTAL_INDEX]); // Used global constant
-            System.out.printf("Taxes: %s\n", arrayTransactions[rows][TAXES_INDEX]); // Used global constant
-            System.out.printf("Total Cost: %s\n", arrayTransactions[rows][TOTAL_INDEX]); // Used global constant
+            System.out.printf("Transaction #: %s\n", arrayTransactions[rows][TRANSACTION_INDEX]);
+            System.out.printf("Employee ID: %s\n", arrayTransactions[rows][ID_INDEX]);
+            System.out.printf("Items Sold: %s\n", arrayTransactions[rows][ITEMS_INDEX]);
+            System.out.printf("Price of Items Sold: %s\n", arrayTransactions[rows][ITEMPRICE_INDEX]);
+            System.out.printf("Subtotal Cost: %s\n", arrayTransactions[rows][SUBTOTAL_INDEX]);
+            System.out.printf("Taxes: %s\n", arrayTransactions[rows][TAXES_INDEX]);
+            System.out.printf("Total Cost: %s\n", arrayTransactions[rows][TOTAL_INDEX]);
 
             System.out.println("\n");
          }
@@ -1027,14 +1004,14 @@ public class SoftwareEngineeringTask{
    Change:
    */
    public static void viewTransactions(int specificTransaction){
-      // Constant Declaration (These are now global constants, removed local final declaration)
-      // final int TRANSACTION_INDEX = 0;
-      // final int ID_INDEX = 1;
-      // final int ITEMS_INDEX = 2;
-      // final int ITEMPRICE_INDEX = 3;
-      // final int SUBTOTAL_INDEX = 4;
-      // final int TAXES_INDEX = 5;
-      // final int TOTAL_INDEX = 6;
+      // Constant Declaration
+      final int TRANSACTION_INDEX = 0;
+      final int ID_INDEX = 1;
+      final int ITEMS_INDEX = 2;
+      final int ITEMPRICE_INDEX = 3;
+      final int SUBTOTAL_INDEX = 4;
+      final int TAXES_INDEX = 5;
+      final int TOTAL_INDEX = 6;
 
       // Variable Declaration
       int rows = 0;
@@ -1079,13 +1056,13 @@ public class SoftwareEngineeringTask{
 
                         // prints the corresponding line in the array
                         rows = transactionNum - 1;
-                        System.out.printf("Transaction #: %s\n", arrayTransactions[rows][TRANSACTION_INDEX]); // Used global constant
-                        System.out.printf("Employee ID: %s\n", arrayTransactions[rows][ID_INDEX]); // Used global constant
-                        System.out.printf("Items Sold: %s\n", arrayTransactions[rows][ITEMS_INDEX]); // Used global constant
-                        System.out.printf("Price of Items Sold: %s\n", arrayTransactions[rows][ITEMPRICE_INDEX]); // Used global constant
-                        System.out.printf("Subtotal Cost: %s\n", arrayTransactions[rows][SUBTOTAL_INDEX]); // Used global constant
-                        System.out.printf("Taxes: %s\n", arrayTransactions[rows][TAXES_INDEX]); // Used global constant
-                        System.out.printf("Total Cost: %s\n", arrayTransactions[rows][TOTAL_INDEX]); // Used global constant
+                        System.out.printf("Transaction #: %s\n", arrayTransactions[rows][TRANSACTION_INDEX]);
+                        System.out.printf("Employee ID: %s\n", arrayTransactions[rows][ID_INDEX]);
+                        System.out.printf("Items Sold: %s\n", arrayTransactions[rows][ITEMS_INDEX]);
+                        System.out.printf("Price of Items Sold: %s\n", arrayTransactions[rows][ITEMPRICE_INDEX]);
+                        System.out.printf("Subtotal Cost: %s\n", arrayTransactions[rows][SUBTOTAL_INDEX]);
+                        System.out.printf("Taxes: %s\n", arrayTransactions[rows][TAXES_INDEX]);
+                        System.out.printf("Total Cost: %s\n", arrayTransactions[rows][TOTAL_INDEX]);
 
                      }
                   }
@@ -1129,11 +1106,11 @@ public class SoftwareEngineeringTask{
    */
    public static void addInventory(String codeUPC)
    {
-      // Constant Declaration (These are now global constants, removed local final declaration)
-      // final int NAME_INDEX = 0;
-      // final int UPC_INDEX = 1;
-      // final int PRICE_INDEX = 2;
-      // final int QTY_INDEX = 3;
+      // Constant Declaration
+      final int NAME_INDEX = 0;
+      final int UPC_INDEX = 1;
+      final int PRICE_INDEX = 2;
+      final int QTY_INDEX = 3;
 
       // Variable Declaration
       int firstEmptyRow = 0;
@@ -1143,16 +1120,14 @@ public class SoftwareEngineeringTask{
 
       // check the array for codeUPC
       for(int rows = 0; rows < MAX_SIZE; rows++){
-         if(arrayInventory[rows][UPC_INDEX] != null && codeUPC.equals(arrayInventory[rows][UPC_INDEX])){ // Used global constant
-            // check (delete later)
+         // Added null check for arrayInventory[rows][UPC_INDEX]
+         if(arrayInventory[rows][UPC_INDEX] != null && codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
             System.out.println("UPC code exists in array!");
-            // try again in main method
-            // once the return is reached, the rest of the method doesn't run.
             return;
          }
       }
       // determine where the first empty spot in the array is (either null, or empty string)
-      while(firstEmptyRow < MAX_SIZE && arrayInventory[firstEmptyRow][UPC_INDEX] != null && !arrayInventory[firstEmptyRow][UPC_INDEX].equals("")){ // Used global constant
+      while(firstEmptyRow < MAX_SIZE && arrayInventory[firstEmptyRow][UPC_INDEX] != null && !arrayInventory[firstEmptyRow][UPC_INDEX].equals("")){
          firstEmptyRow++;
       }
       if (firstEmptyRow >= MAX_SIZE) {
@@ -1160,23 +1135,23 @@ public class SoftwareEngineeringTask{
           return;
       }
       // if we get to this step, it  means that the UPC code does not exist, so we need to add a new value in the array.
-      arrayInventory[firstEmptyRow][UPC_INDEX] = codeUPC; // Used global constant
+      arrayInventory[firstEmptyRow][UPC_INDEX] = codeUPC;
       // prompt user for name, price, and quantity of the item.
 
       // prompt user for name of the item
       System.out.print("What is the name of the item?: ");
       // update the appropriate array index with the next keyboard input
-      arrayInventory[firstEmptyRow][NAME_INDEX] = sc.nextLine(); // Used global constant
+      arrayInventory[firstEmptyRow][NAME_INDEX] = sc.nextLine();
 
       // prompt user for price of the item
       System.out.print("What is the price of the item?: ");
       // update the appropriate array index with the next keyboard input
-      arrayInventory[firstEmptyRow][PRICE_INDEX] = sc.nextLine(); // Used global constant
+      arrayInventory[firstEmptyRow][PRICE_INDEX] = sc.nextLine();
 
       // prompt user for quantity of the item
       System.out.print("What is the quantity of the item?: ");
       // update the appropriate array location with the next keyboard input
-      arrayInventory[firstEmptyRow][QTY_INDEX] = sc.nextLine(); // Used global constant
+      arrayInventory[firstEmptyRow][QTY_INDEX] = sc.nextLine();
 
       return; // Exit after successful update
    }
@@ -1190,32 +1165,33 @@ public class SoftwareEngineeringTask{
    */
    public static void updateInventory(String codeUPC)
    {
-      // Constant Declaration (These are now global constants, removed local final declaration)
-      // final int NAME_INDEX = 0;
-      // final int UPC_INDEX = 1;
-      // final int PRICE_INDEX = 2;
-      // final int QTY_INDEX = 3;
+      // Constant Declaration
+      final int NAME_INDEX = 0;
+      final int UPC_INDEX = 1;
+      final int PRICE_INDEX = 2;
+      final int QTY_INDEX = 3;
 
       // Creating Scanner
       Scanner sc = new Scanner(System.in);
 
       // check the array for codeUPC
       for(int rows = 0; rows < MAX_SIZE; rows++){
-         System.out.println("Checking row " + rows + ": " + arrayInventory[rows][UPC_INDEX]); // Used global constant
-         if(arrayInventory[rows][UPC_INDEX] != null && codeUPC.trim().equals(arrayInventory[rows][UPC_INDEX])){ // Used global constant
+         System.out.println("Checking row " + rows + ": " + arrayInventory[rows][UPC_INDEX]);
+         // Added null check for arrayInventory[rows][UPC_INDEX]
+         if(arrayInventory[rows][UPC_INDEX] != null && codeUPC.trim().equals(arrayInventory[rows][UPC_INDEX])){
             // print the name, current price & qty of item
-            System.out.printf("The item name is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]); // Used global constant
+            System.out.printf("The item name is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]);
 
             // prompt user for new price of the item
             System.out.print("What is the new price of the item?: ");
             // update the appropriate array indexwith the next keyboard input
-            arrayInventory[rows][PRICE_INDEX] = sc.nextLine(); // Used global constant
+            arrayInventory[rows][PRICE_INDEX] = sc.nextLine();
 
 
             // prompt user for new quantity of the item
             System.out.print("What is the new quantity of the item?: ");
             // update the appropriate array location with the next keyboard input
-            arrayInventory[rows][QTY_INDEX] = sc.nextLine(); // Used global constant
+            arrayInventory[rows][QTY_INDEX] = sc.nextLine();
 
             return; // Exit after successful update
          }
@@ -1233,27 +1209,23 @@ public class SoftwareEngineeringTask{
    */
    public static void delete(String codeUPC)
    {
-      // Constant Declaration (These are now global constants, removed local final declaration)
-      // final int UPC_INDEX = 1;
-      // final int NAME_INDEX = 0;
-
-      // Variable Declaration
-      //String itemName = "";
-      //boolean itemExists = false;
+      // Constant Declaration
+      final int UPC_INDEX = 1;
+      final int NAME_INDEX = 0;
 
       // Creating Scanner
       Scanner sc = new Scanner(System.in);
-      // checks codeUPC against all values in the inventory array
 
       // check the array for codeUPC
       for(int rows = 0; rows < MAX_SIZE; rows++){
-         if(arrayInventory[rows][UPC_INDEX] != null && codeUPC.equals(arrayInventory[rows][UPC_INDEX])){ // Used global constant
+         // Added null check for arrayInventory[rows][UPC_INDEX]
+         if(arrayInventory[rows][UPC_INDEX] != null && codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
             // the item exists
             System.out.println("UPC code exists in array!");
             System.out.print("Please input the name of the item: ");
 
-            //itemName = sc.nextLine();
-            if(arrayInventory[rows][NAME_INDEX] != null && arrayInventory[rows][NAME_INDEX].equals(sc.nextLine())){ // Used global constant
+            // Added null check for arrayInventory[rows][NAME_INDEX]
+            if(arrayInventory[rows][NAME_INDEX] != null && arrayInventory[rows][NAME_INDEX].equals(sc.nextLine())){
                System.out.println("Name Found!");
                // delete item (loop through specific row and make everything ""
                for(int cols = 0;  cols < INVENTORY_PARAMETERS; cols++){
@@ -1264,22 +1236,11 @@ public class SoftwareEngineeringTask{
             else{
                System.out.println("Name does not exist in the Inventory. (Incorrect Item Name)");
             }
-            //itemExists = true;
             return;
          }
       }
-
-
-      // if statement to check
-      // if it exists: Prompt user for name of item to delete
-      /*if(itemExists){
-         System.out.print("Please input the name of the item: ");
-         itemName = sc.nextLine();
-      }
-      // if it does not exist: print item does not exist
-      else{*/
-         System.out.print("Item does not exist.");
-      }
+      System.out.print("Item does not exist.");
+   }
 
    /*
    Name: checkInv
@@ -1290,17 +1251,18 @@ public class SoftwareEngineeringTask{
    */
    public static void checkInv(String codeUPC)
    {
-      // Constant Declaration (These are now global constants, removed local final declaration)
-      // final int NAME_INDEX = 0;
-      // final int UPC_INDEX = 1;
-      // final int PRICE_INDEX = 2;
-      // final int QTY_INDEX = 3;
+      // Constant Declaration
+      final int NAME_INDEX = 0;
+      final int UPC_INDEX = 1;
+      final int PRICE_INDEX = 2;
+      final int QTY_INDEX = 3;
 
       // determine if item exists in array
       for(int rows = 0; rows < MAX_SIZE; rows++){
-         if(arrayInventory[rows][UPC_INDEX] != null && codeUPC.equals(arrayInventory[rows][UPC_INDEX])){ // Used global constant
+         // Added null check for arrayInventory[rows][UPC_INDEX]
+         if(arrayInventory[rows][UPC_INDEX] != null && codeUPC.equals(arrayInventory[rows][UPC_INDEX])){
             // print the name, current price & qty of item
-            System.out.printf("The item name is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]); // Used global constant
+            System.out.printf("The item name is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]);
             return;
          }
       }
@@ -1317,14 +1279,14 @@ public class SoftwareEngineeringTask{
    */
    public static void listAll()
    {
-      // constant declaration (This was moved to global constants, removed local final declaration)
-      // final int PRICE_INDEX = 2;
+      // Constant Declaration
+      final int UPC_INDEX = 1; // Need UPC_INDEX to check if row is empty
 
       //print the array (INVENTORY)
       for(int rows = 0; rows < MAX_SIZE; rows++){
           // Only print if the row is not empty (e.g., UPC code exists)
-          if (arrayInventory[rows][UPC_INDEX] != null && !arrayInventory[rows][UPC_INDEX].isEmpty()) { // Used global constant
-              for(int cols = 0; cols < INVENTORY_PARAMETERS; cols++){ // Changed to INVENTORY_PARAMETERS to print all relevant info
+          if (arrayInventory[rows][UPC_INDEX] != null && !arrayInventory[rows][UPC_INDEX].equals("")) {
+              for(int cols = 0; cols < INVENTORY_PARAMETERS; cols++){ // Print all inventory parameters
                   System.out.print(arrayInventory[rows][cols] + " ");
               }
               System.out.println("\n");
@@ -1341,17 +1303,18 @@ public class SoftwareEngineeringTask{
    */
    public static void listItem(String itemName)
    {
-      // Constant declaration (These are now global constants, removed local final declaration)
-      // final int NAME_INDEX = 0;
-      // final int UPC_INDEX = 1;
-      // final int PRICE_INDEX = 2;
-      // final int QTY_INDEX = 3;
+      // Constant declaration
+      final int NAME_INDEX = 0;
+      final int UPC_INDEX = 1;
+      final int PRICE_INDEX = 2;
+      final int QTY_INDEX = 3;
 
       // compare item name with values in inventoryArray
       for(int rows = 0; rows < MAX_SIZE; rows++){
-         if(arrayInventory[rows][NAME_INDEX] != null && itemName.equals(arrayInventory[rows][NAME_INDEX])){ // Used global constant
+         // Added null check for arrayInventory[rows][NAME_INDEX]
+         if(arrayInventory[rows][NAME_INDEX] != null && itemName.equals(arrayInventory[rows][NAME_INDEX])){
             // print the UPC, current price & qty of item
-            System.out.printf("The item UPC is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][UPC_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]); // Used global constant
+            System.out.printf("The item UPC is %s. The current price is $%s, and the current quantity is %s.%n", arrayInventory[rows][UPC_INDEX], arrayInventory[rows][PRICE_INDEX], arrayInventory[rows][QTY_INDEX]);
             return;
          }
       }
@@ -1359,164 +1322,199 @@ public class SoftwareEngineeringTask{
    }
 
    /*
-   Name: checkOut
-   Return Type: void
-   Parameters: String employeeID (need to record which employee performed the action)
-   Description: This method prompts the user to input the UPC for items to be purchased, keeping a total of the price. If a UPC does not exist, an error is printed. If it does, the name, price, and total items scanned are displayed. If 'Q' is entered, a receipt is printed, outlining the transaction number, item names, and price. Inventory counts are reduced as items are purchased.
-   Change:
-   */
+    Name: checkOut
+    Return Type: void
+    Parameters: String employeeID (need to record which employee performed the action)
+    Description: This method prompts the user to input the UPC for items to be purchased, keeping a total of the price. If a UPC does not exist, an error is printed. If it does, the name, price, and total items scanned are displayed. If 'Q' is entered, a receipt is printed, outlining the transaction number, item names, and price. Inventory counts are reduced as items are purchased.
+    Change:
+    */
    public static void checkOut(String employeeID){
-      // Constant Declaration (These are now global constants, removed local final declaration)
-      // final int NAME_INDEX = 0;
-      // final int UPC_INDEX = 1;
-      // final int PRICE_INDEX = 2;
-      // final int QTY_INDEX = 3;
-      // final double HST = 0.13;
-
-      // transaction array constants (These are now global constants, removed local final declaration)
-      // final int TRANSACTION_INDEX = 0;
-      // final int ID_INDEX = 1;
-      // final int ITEMS_INDEX = 2;
-      // final int ITEMPRICE_INDEX = 3;
-      // final int SUBTOTAL_INDEX = 4;
-      // final int TAXES_INDEX = 5;
-      // final int TOTAL_INDEX = 6;
-
-      // Variable Declaration
-      String scannedItems = "The list of items is: ";
-      String scannedPrice = "";
-      String codeUPC = "";
-      double subtotal = 0;
-      double totalPrice = 0;
-      int newQty = 0;
-      int newTransaction = 0;
-      boolean itemFound = false;
-
-      int itemIndex = 0;
-      boolean itemUpdated = false;
-
-      // Creating Scanner
-      Scanner sc = new Scanner(System.in);
-
-      do{
-         // SET ITEMFOUND TO FALSE
-         itemFound = false;
-         // prompt user for a UPC
-         System.out.print("Please Enter a UPC (or Q to quit): ");
-         codeUPC = sc.nextLine();
-
-         if (codeUPC.equalsIgnoreCase("q")) {
-             break; // Exit the loop if 'q' is entered
-         }
-
-         // perform check to see if UPC exists
-         for(int rows = 0; rows < MAX_SIZE; rows++){
-            if(arrayInventory[rows][UPC_INDEX] != null && codeUPC.equals(arrayInventory[rows][UPC_INDEX])){ // Used global constant
-
-               // Check if the item's price and quantity are valid numbers before parsing
-               if (arrayInventory[rows][PRICE_INDEX] == null || arrayInventory[rows][PRICE_INDEX].trim().isEmpty() || // Used global constant
-                   arrayInventory[rows][QTY_INDEX] == null || arrayInventory[rows][QTY_INDEX].trim().isEmpty()) { // Used global constant
-                   System.out.println("Error: Item data (price or quantity) is incomplete or invalid for UPC " + codeUPC);
-                   itemFound = true; // Mark as found to prevent "item does not exist" message
-                   break; // Skip to the next UPC input
-               }
-
-               // print the name, current price & qty of item
-               System.out.printf("The item name is %s. The current price of the item is $%s\n", arrayInventory[rows][NAME_INDEX], arrayInventory[rows][PRICE_INDEX]); // Used global constant
-               scannedItems = scannedItems + arrayInventory[rows][NAME_INDEX] + ", "; // Used global constant
-               scannedPrice = scannedPrice + arrayInventory[rows][PRICE_INDEX] + ", "; // Used global constant
-               itemFound = true;
-               itemIndex = rows;
-
-               // check qty
-               try {
-                   int currentQty = Integer.parseInt(arrayInventory[rows][QTY_INDEX]); // Used global constant
-                   if (currentQty == 0){
-                      System.out.println("Inventory count is zero. Cannot sell this item.");
+       // Constant Declaration 
+       final int NAME_INDEX = 0;
+       final int UPC_INDEX = 1;
+       final int PRICE_INDEX = 2;
+       final int QTY_INDEX = 3;
+       final double HST = 0.13;
+   
+       final int TRANSACTION_INDEX = 0;
+       final int ID_INDEX = 1;
+       final int ITEMS_INDEX = 2;
+       final int ITEMPRICE_INDEX = 3;
+       final int SUBTOTAL_INDEX = 4;
+       final int TAXES_INDEX = 5;
+       final int TOTAL_INDEX = 6;
+   
+       // Variable Declarations 
+       String scannedItems = "The list of items is: ";
+       String scannedPrice = "";
+       String codeUPC = "";
+       double subtotal = 0;
+       double totalPrice = 0;
+       int newQty = 0;
+       int newTransaction = 0;
+       boolean itemFoundInCurrentScan; // Will be initialized in the loop
+       boolean transactionMadeDuringCheckout = false;
+       boolean continueScanning = true;
+       int itemIndex = 0; // Index of the last found item in arrayInventory
+       Scanner sc = new Scanner(System.in); // Scanner initialized here
+   
+       int rows; // Loop counter
+       int currentRow; // Loop counter within the item search
+       int maxTransactionNum; // Used for finding max transaction number
+       int transactionRowIterator; // Loop counter for finding max transaction number
+       int nextTransactionRow; // Used for finding the next empty transaction row
+       int i; // Loop counter for finding next empty transaction row
+   
+       double taxes = 0;
+   
+       // Loop for scanning UPCs
+       while(continueScanning) {
+           itemFoundInCurrentScan = false; // Reset for each UPC entry
+           System.out.print("Please Enter a UPC (or Q to quit): ");
+           codeUPC = sc.nextLine();
+   
+           if (codeUPC.equalsIgnoreCase("q")) {
+               continueScanning = false; // Exit the loop if 'q' is entered
+           }
+           else {
+               // Perform check to see if UPC exists
+               currentRow = 0; // Initialize loop counter
+               while (currentRow < MAX_SIZE && !itemFoundInCurrentScan) {
+                   if(arrayInventory[currentRow][UPC_INDEX] != null && codeUPC.equals(arrayInventory[currentRow][UPC_INDEX])){
+   
+                       // Check if the item's price and quantity are valid numbers before parsing
+                       if (arrayInventory[currentRow][PRICE_INDEX] == null || (arrayInventory[currentRow][PRICE_INDEX].trim()).equals("") ||
+                           arrayInventory[currentRow][QTY_INDEX] == null || (arrayInventory[currentRow][QTY_INDEX].trim()).equals("")) {
+                           System.out.println("Error: Item data (price or quantity) is incomplete or invalid for UPC " + codeUPC);
+                           itemFoundInCurrentScan = true; // Mark as found to prevent "item does not exist" message
+                       }
+                       else {
+                           // print the name, current price & qty of item
+                           System.out.printf("The item name is %s. The current price of the item is $%s\n", arrayInventory[currentRow][NAME_INDEX], arrayInventory[currentRow][PRICE_INDEX]);
+                           scannedItems = scannedItems + arrayInventory[currentRow][NAME_INDEX] + ", ";
+                           scannedPrice = scannedPrice + arrayInventory[currentRow][PRICE_INDEX] + ", ";
+                           itemFoundInCurrentScan = true;
+                           transactionMadeDuringCheckout = true; // An item was successfully scanned
+                           itemIndex = currentRow; // Store the index of the found item
+   
+                           // check qty
+                           try {
+                               int currentQty = Integer.parseInt(arrayInventory[currentRow][QTY_INDEX]);
+                               if (currentQty == 0){
+                                   System.out.println("Inventory count is zero. Cannot sell this item.");
+                               }
+                               else {
+                                   // reduce inv count by 1
+                                   newQty = currentQty - 1;
+                                   arrayInventory[currentRow][QTY_INDEX] = "" + (newQty); // Convert int back to String
+                                   System.out.println("Remaining quantity: " + newQty);
+                               }
+                           }
+                           catch (NumberFormatException e) {
+                               System.out.println("Invalid quantity format for item " + arrayInventory[currentRow][NAME_INDEX] + ". Quantity not updated.");
+                           }
+   
+                           // Calculate transaction
+                           try{
+                               subtotal += Double.parseDouble(arrayInventory[currentRow][PRICE_INDEX]);
+                               System.out.printf("Current Subtotal is $%.2f.\n", subtotal);
+                           }
+                           catch (NumberFormatException e) {
+                               System.out.println("Invalid price format for item " + arrayInventory[currentRow][NAME_INDEX] + ". Price not added to subtotal.");
+                           }
+   
+                           // print all items scanned thus far
+                           System.out.println(scannedItems);
+                       }
                    }
-                   else{
-                      // reduce inv count by 1
-                      newQty = currentQty - 1;
-                      arrayInventory[rows][QTY_INDEX] = String.valueOf(newQty); // Convert int back to String // Used global constant
-                      System.out.println("Remaining quantity: " + newQty);
+                   currentRow++;
+               } // end while (inner loop for finding item)
+   
+               if (!itemFoundInCurrentScan){ // If no item found after checking all rows for the current UPC
+                   System.out.println("The item does not exist. Try again.");
+               }
+           }
+       } // end while (continueScanning loop)
+   
+       // RUN AFTER SCANNING LOOP ENDS (only if items were scanned)
+       if (transactionMadeDuringCheckout) { // Only print receipt and record if something was scanned
+           System.out.printf("\nRECEIPT\n");
+           // Check for how much HST would be on this
+           taxes = subtotal * HST;
+           totalPrice = subtotal * (1 + HST);
+   
+           System.out.printf("Subtotal: $%.2f\n", subtotal);
+           System.out.printf("Amount of 13%% HST: $%.2f.\n", taxes);
+           System.out.printf("Total price including 13%% HST: $%.2f.\n", totalPrice);
+   
+           // Safely print scanned items list
+           if (scannedItems.length() > "The list of items is: ".length()) {
+               System.out.println(scannedItems.substring(0, scannedItems.length() - 2)); // Remove trailing ", "
+           }
+           else {
+               System.out.println("No items were successfully scanned.");
+           }
+   
+           // Find the next available transaction slot and update arrayTransactions
+           nextTransactionRow = -1; // Reset before finding
+           i = 0; // Initialize loop counter
+           while (i < MAX_SIZE && nextTransactionRow == -1) {
+               if (arrayTransactions[i][TRANSACTION_INDEX] == null || (arrayTransactions[i][TRANSACTION_INDEX]).equals("")) {
+                   nextTransactionRow = i;
+               }
+               i++;
+           }
+   
+           if (nextTransactionRow != -1) {
+               // Calculate new transaction number by finding the maximum existing transaction number
+               maxTransactionNum = 0; // Reset before finding max
+               transactionRowIterator = 0; // Initialize loop counter
+               while (transactionRowIterator < MAX_SIZE) {
+                   if (arrayTransactions[transactionRowIterator][TRANSACTION_INDEX] != null && !(arrayTransactions[transactionRowIterator][TRANSACTION_INDEX]).equals("")) {
+                       try {
+                           int currentTransNum = Integer.parseInt(arrayTransactions[transactionRowIterator][TRANSACTION_INDEX]);
+                           if (currentTransNum > maxTransactionNum) {
+                               maxTransactionNum = currentTransNum;
+                           }
+                       }
+                       catch (NumberFormatException e) {
+                           System.out.println("Warning: Invalid transaction number format found in arrayTransactions at row " + transactionRowIterator + ": " + arrayTransactions[transactionRowIterator][TRANSACTION_INDEX]);
+                       }
                    }
+                   transactionRowIterator++;
                }
-               catch (NumberFormatException e) {
-                   System.out.println("Invalid quantity format for item " + arrayInventory[rows][NAME_INDEX] + ". Quantity not updated."); // Used global constant
+               newTransaction = maxTransactionNum + 1;
+   
+               arrayTransactions[nextTransactionRow][TRANSACTION_INDEX] = "" + (newTransaction);
+               arrayTransactions[nextTransactionRow][ID_INDEX] = employeeID;
+   
+               // Safely assign scannedItems and scannedPrice for the transaction record
+               if (scannedItems.length() > "The list of items is: ".length()) {
+                   arrayTransactions[nextTransactionRow][ITEMS_INDEX] = scannedItems.substring(0, scannedItems.length() - 2);
                }
-
-               // Calculate transaction
-               try{
-                  subtotal += Double.parseDouble(arrayInventory[rows][PRICE_INDEX]); // Used global constant
-                  // subtotal check
-                  System.out.printf("Current Subtotal is $%.2f.\n", subtotal);
-
+               else {
+                   arrayTransactions[nextTransactionRow][ITEMS_INDEX] = "";
                }
-               catch (NumberFormatException e) {
-                   System.out.println("Invalid price format for item " + arrayInventory[rows][NAME_INDEX] + ". Price not added to subtotal."); // Used global constant
+   
+               if (scannedPrice.length() > 0) {
+                   arrayTransactions[nextTransactionRow][ITEMPRICE_INDEX] = scannedPrice.substring(0, scannedPrice.length() - 2);
                }
-
-               // print all items scanned thus far
-               System.out.println(scannedItems);
-               break; // Item found and processed, exit inner loop
-            }
-         } // end of for
-         if (!itemFound){ // No item found after checking all rows
-            System.out.println("The item does not exist. Try again.");
-         }
-      }
-      // loop until 'q' is entered
-      while(true); // Loop will be exited by 'break' when 'q' is entered
-
-      // RUN AFTER WHILE LOOP ENDS (only if items were scanned)
-      if (subtotal > 0) { // Only print receipt if something was scanned
-          System.out.printf("\nRECEIPT\n");
-          // Check for how much HST would be on this
-          double taxes = subtotal * HST; // Used global constant
-          totalPrice = subtotal * (1 + HST); // Used global constant
-
-          System.out.printf("Subtotal: $%.2f\n", subtotal);
-          System.out.printf("Amount of 13%% HST: $%.2f.\n", taxes);
-          System.out.printf("Total price including 13%% HST: $%.2f.\n", totalPrice);
-          System.out.println(scannedItems.substring(0, scannedItems.length() - 2)); // Remove trailing ", "
-
-          // Find the next available transaction slot and update arrayTransactions
-          int nextTransactionRow = -1;
-          for (int i = 0; i < MAX_SIZE; i++) {
-              // Assuming a transaction slot is empty if TRANSACTION_INDEX is null or empty
-              if (arrayTransactions[i][TRANSACTION_INDEX] == null || arrayTransactions[i][TRANSACTION_INDEX].isEmpty()) { // Used global constant
-                  nextTransactionRow = i;
-                  break;
-              }
-          }
-
-          if (nextTransactionRow != -1) {
-              // Calculate new transaction number
-              int lastTransactionNum = 0;
-              if (nextTransactionRow > 0 && arrayTransactions[nextTransactionRow - 1][TRANSACTION_INDEX] != null && !arrayTransactions[nextTransactionRow - 1][TRANSACTION_INDEX].isEmpty()) { // Used global constant
-                  try {
-                      lastTransactionNum = Integer.parseInt(arrayTransactions[nextTransactionRow - 1][TRANSACTION_INDEX]); // Used global constant
-                  } catch (NumberFormatException e) {
-                      // Handle error if previous transaction number is not a valid integer
-                      System.err.println("Warning: Invalid format for last transaction number. Starting new from 1.");
-                      lastTransactionNum = 0; // Reset if invalid
-                  }
-              }
-              newTransaction = lastTransactionNum + 1;
-
-              arrayTransactions[nextTransactionRow][TRANSACTION_INDEX] = String.valueOf(newTransaction); // Used global constant
-              arrayTransactions[nextTransactionRow][ID_INDEX] = employeeID; // Used global constant
-              arrayTransactions[nextTransactionRow][ITEMS_INDEX] = scannedItems.substring(0, scannedItems.length() - 2); // Remove trailing ", " // Used global constant
-              arrayTransactions[nextTransactionRow][ITEMPRICE_INDEX] = scannedPrice.substring(0, scannedPrice.length() - 2); // Remove trailing ", " // Used global constant
-              arrayTransactions[nextTransactionRow][SUBTOTAL_INDEX] = String.format("%.2f", subtotal); // Used global constant
-              arrayTransactions[nextTransactionRow][TAXES_INDEX] = String.format("%.2f", taxes); // Used global constant
-              arrayTransactions[nextTransactionRow][TOTAL_INDEX] = String.format("%.2f", totalPrice); // Used global constant
-              System.out.println("Transaction recorded successfully with Transaction # " + newTransaction);
-          } else {
-              System.out.println("Could not record transaction: Transaction history is full.");
-          }
-      } else {
-          System.out.println("No items scanned for this checkout.");
-      }
+               else {
+                   arrayTransactions[nextTransactionRow][ITEMPRICE_INDEX] = "";
+               }
+   
+               arrayTransactions[nextTransactionRow][SUBTOTAL_INDEX] = "" + (subtotal);
+               arrayTransactions[nextTransactionRow][TAXES_INDEX] = "" + (taxes);
+               arrayTransactions[nextTransactionRow][TOTAL_INDEX] = "" + (totalPrice);
+   
+               System.out.println("Transaction recorded successfully with Transaction # " + newTransaction);
+           }
+           else {
+               System.out.println("Could not record transaction: Transaction history is full.");
+           }
+       }
+       else {
+           System.out.println("No items scanned for this checkout.");
+       }
    }// end checkOut method
 }//end of class
