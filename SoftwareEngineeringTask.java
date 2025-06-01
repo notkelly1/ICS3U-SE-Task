@@ -366,38 +366,20 @@ public class SoftwareEngineeringTask{
 
                         case "8":
 
-                        System.out.print("Enter PIN: ");
-                        pin = sc.nextLine();
-
-                        System.out.print("Enter First Name: ");
-                        firstName = sc.nextLine();
-
-                        System.out.print("Enter Last Name: ");
-                        lastName = sc.nextLine();
-
-                        System.out.print("Enter Title: ");
-                        title = sc.nextLine();
-
-                        System.out.print("Enter Status (Active or Inactive): ");
-                        status = sc.nextLine();
-
-                        addEmployee( pin, firstName, lastName, title, status);
+                        addEmployee();
                         break;
 
                      case "9":
 
                         System.out.print("Enter Employee ID to edit: ");
-                        id = sc.nextLine();
-                        editDetails(id);
+                        String employeeID = sc.nextLine();
+                        editDetails(employeeID); // pass ID to the method
                         break;
 
                      case "10":
 
-                        // Ask the user for the employee ID
-                        System.out.print("Enter the Employee ID to change status: ");
+                        System.out.print("Enter Employee ID to change status: ");
                         employeeID = sc.nextLine();
-
-                        // Call the method to change the status
                         changeEmployeeStatus(employeeID);
                         break;
 
@@ -418,7 +400,7 @@ public class SoftwareEngineeringTask{
                }// end of switch
             }// end of while
          }
-      }// ends the loop
+      }// ends the loop      
       // FileWriter method used to update the file after all changes are made
          writeFile(TRANSACTION_HISTORY);
          writeFile(INVENTORY);
@@ -610,360 +592,387 @@ public class SoftwareEngineeringTask{
        }
    }
 
+
    /*
    Name: addEmployee
    Return Type: void
-   Parameters: String pin, String firstName, String lastName, String title, String status
-   Description: This method will assign the next available Employee ID number and prompt the administrator to provide:
-   the PIN, first name, last name, title and status of the new employee, updating all information to their respective arrays
+   Parameters: None   
+   Description: This method will assign the next available Employee ID number and prompt the administrator to provide: the PIN, first name, last name, title and status of the new employee, updating all information to the arrayEmployees
    Change:
    */
 
    // Lauren's Code
-   public static void addEmployee(String pin, String firstName, String lastName, String title, String status)
+   public static void addEmployee() 
    {
-       String[] lines = new String[1000];
-       int totalLines = 0;
-       String line;
-       int start = -1;
+       String line = "";
+       int employeeIndex = 0;
+       int paramIndex = 0;
+       int nextIndex = -1;
        int maxID = 0;
-       int newID = 0;
-       String employeeID = "";
-       boolean isNumber;
-
-       // Step 1: Read the file into the lines array
-       try
+       String pin = "";
+       String firstName = "";
+       String lastName = "";
+       String title = "";
+       String status = "";
+       String employeeID = "";       
+       Scanner sc = new Scanner(System.in);
+   
+       // Load existing employees from file
+       try (BufferedReader br = new BufferedReader(new FileReader(EMPLOYEE))) 
        {
-           BufferedReader in = new BufferedReader(new FileReader("EmployeeFile.txt"));
-           while ((line = in.readLine()) != null)
+           while ((line = br.readLine()) != null && employeeIndex < MAX_SIZE) 
            {
-               lines[totalLines] = line;
-               totalLines++;
-           }
-           in.close();
-       }
-       catch (IOException e)
-       {
-           System.out.println("Error reading file.");
-           return;
-       }
-
-       // Step 2: Find the first empty slot pattern: ***, "", ***
-       for (int j = 0; j < totalLines - 5; j++)
-       {
-             if (lines[j].equals("") && lines[j + 1].equals("") && lines[j + 2].equals("") && lines[j + 3].equals("") && lines[j + 4].equals("") && lines[j + 5].equals("***"))
-             {
-                 start = j;
-             }
-       }
-
-       if (start == -1)
-       {
-           System.out.println("No available employee slot.");
-           return;
-       }
-
-       System.out.println("Found slot at line: " + start);
-
-       // Step 3: Find the highest existing employee ID (5-digit number)
-       for (int i = 0; i < totalLines; i++)
-       {
-           line = lines[i];
-           if (line != null && line.length() == 5)
-           {
-               isNumber = true;
-               for (int k = 0; k < 5; k++)
+               if (line.equals("***")) 
                {
-                   char c = line.charAt(k);
-                   if (c < '0' || c > '9')
-                   {
-                       isNumber = false;
-                   }
-               }
-               if (isNumber)
+                   employeeIndex++;
+                   paramIndex = 0;
+               } 
+               else 
                {
-                   int id = Integer.parseInt(line);
-                   if (id > maxID)
+                   if (paramIndex < EMPLOYEE_PARAMETERS) 
                    {
-                       maxID = id;
+                       arrayEmployees[employeeIndex][paramIndex] = line;
+                       paramIndex++;
                    }
                }
            }
-       }
-
-       // Step 4: Generate new employee ID with leading zeros
-       newID = maxID + 1;
-       if (newID < 10)
+       } 
+       catch (IOException e) 
        {
-           employeeID = "0000" + newID;
+           System.out.println("Error reading employee file: " + e.getMessage());
+           return;
        }
-       else if (newID < 100)
+   
+       // Find next free slot and max ID
+       for (int i = 0; i < MAX_SIZE; i++) 
        {
-           employeeID = "000" + newID;
-       }
-       else if (newID < 1000)
-       {
-           employeeID = "00" + newID;
-       }
-       else if (newID < 10000)
-       {
-           employeeID = "0" + newID;
-       }
-       else
-       {
-           employeeID = "" + newID;
-       }
-
-       System.out.println("Writing employee ID: " + employeeID);
-
-       // Step 5: Create new employee info array
-       String[] newEmployeeInfo = new String[5];
-       newEmployeeInfo[0] = employeeID;
-       newEmployeeInfo[1] = pin;
-       newEmployeeInfo[2] = firstName + " " + lastName;
-       newEmployeeInfo[3] = title;
-       newEmployeeInfo[4] = status;
-
-       // Step 6: Copy new employee info into lines array using a loop
-       int idx = 0;
-       for (int i = start; i < start + 5; i++)
-       {
-           lines[i] = newEmployeeInfo[idx];
-           idx++;
-       }
-       // lines[start + 5] should remain "***" (leave untouched)
-
-       // Step 7: Write the updated lines back to the file
-       try
-       {
-           BufferedWriter bw = new BufferedWriter(new FileWriter("EmployeeFile.txt"));
-           for (int i = 0; i < totalLines; i++)
+           if (arrayEmployees[i][0] == null || arrayEmployees[i][0].length() == 0) 
            {
-               if (lines[i] != null)
+               if (nextIndex == -1) nextIndex = i;
+           } 
+           else 
+           {
+               try 
                {
-                   bw.write(lines[i]);
+                   int id = Integer.parseInt(arrayEmployees[i][0]);
+                   if (id > maxID) maxID = id;
+               } 
+               catch (NumberFormatException e) 
+               {
+                   // ignore malformed IDs
                }
-               bw.newLine();
            }
-           bw.close();
-           System.out.println("Employee added successfully with ID: " + employeeID);
        }
-       catch (IOException e)
+       if (nextIndex == -1) 
        {
-           System.out.println("Error writing to file.");
+           System.out.println("No available employee slots.");
+           return;
        }
+   
+       // Prompt admin for new employee data
+       System.out.print("Enter PIN: ");
+       pin = sc.nextLine();
+   
+       System.out.print("Enter First Name: ");
+       firstName = sc.nextLine();
+   
+       System.out.print("Enter Last Name: ");
+       lastName = sc.nextLine();
+   
+       System.out.print("Enter Title: ");
+       title = sc.nextLine();
+   
+       System.out.print("Enter Status: ");
+       status = sc.nextLine();
+   
+       int newID = maxID + 1;
+       employeeID = "00000" + newID;
+       employeeID = employeeID.substring(employeeID.length() - 5); 
+        
+       // Update arrayEmployees with new data
+       arrayEmployees[nextIndex][0] = employeeID;
+       arrayEmployees[nextIndex][1] = pin;
+       arrayEmployees[nextIndex][2] = firstName + " " + lastName;
+       arrayEmployees[nextIndex][3] = title;
+       arrayEmployees[nextIndex][4] = status;
+   
+       // Write entire array back to file
+       try (BufferedWriter bw = new BufferedWriter(new FileWriter(EMPLOYEE))) 
+       {
+           for (int i = 0; i < MAX_SIZE; i++) 
+           {
+               if (arrayEmployees[i][0] != null && arrayEmployees[i][0].length() > 0) 
+               {
+                   for (int j = 0; j < EMPLOYEE_PARAMETERS; j++) 
+                   {
+                       bw.write(arrayEmployees[i][j]);
+                       bw.newLine();
+                   }
+                   bw.write("***");
+                   bw.newLine();
+               } 
+               else 
+               {
+                   for (int j = 0; j < EMPLOYEE_PARAMETERS; j++) 
+                   {
+                       bw.newLine();
+                   }
+                   bw.write("***");
+                   bw.newLine();
+               }
+           }
+       } 
+       catch (IOException e) 
+       {
+           System.out.println("Error writing to file: " + e.getMessage());
+           return;
+       }
+   
+       // Print confirmation of new employee added
+       System.out.println("\nNew Employee Added:");
+       System.out.println("ID:     " + arrayEmployees[nextIndex][0]);
+       System.out.println("PIN:    " + arrayEmployees[nextIndex][1]);
+       System.out.println("Name:   " + arrayEmployees[nextIndex][2]);
+       System.out.println("Title:  " + arrayEmployees[nextIndex][3]);
+       System.out.println("Status: " + arrayEmployees[nextIndex][4]);
    }
+   
    /*
    Name: editDetails
    Return Type: void
-   Parameters: String employeeID
+   Parameters: String inputID
    Description: This method prompts the administrator for the employee ID to edit and then checks and compares if it exists. If it matches, the system should allow the administrator to change the PIN, First name, Last name, and Title; if not, an error message will be printed.
    Change:
+
    */
-    public static void editDetails(String employeeID)
+   public static void editDetails(String inputID) 
    {
-      File inputFile = new File("EmployeeFile.txt");
-      File tempFile = new File("employees_temp.txt");
-
-      try
-      {
-         BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-         BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-         Scanner sc = new Scanner(System.in);
-
-         String line;
-         boolean found = false;
-         String currentPIN;
-         String newPin;
-         String currentName;
-         String newName;
-         String currentTitle;
-         String newTitle;
-         String currentStatus;
-         String boundary;
-
-         while ((line = reader.readLine()) != null)
-         {
-            if (line.equals(employeeID))
-            {
-               found = true;
-
-               writer.write(line); // write employeeID
-               writer.newLine();
-
-               // PIN
-               currentPIN = reader.readLine();
-               System.out.println("Current PIN: " + currentPIN);
-               System.out.print("Enter new PIN (or Enter to keep): ");
-               newPin = sc.nextLine();
-               if (newPin.equals(""))
+       Scanner sc = new Scanner(System.in);
+       int employeeIndex = -1;
+       String line;
+       int row = 0;
+       int col = 0;
+       String pin;
+       String fullName;
+       String title;
+   
+       // Load existing employee data
+       try (BufferedReader br = new BufferedReader(new FileReader(EMPLOYEE))) 
+       {
+           while ((line = br.readLine()) != null && row < MAX_SIZE) 
+           {
+               if (line.equals("***")) 
                {
-                  newPin = currentPIN;
-               }
-               writer.write(newPin);
-               writer.newLine();
-
-               // Name
-               currentName = reader.readLine();
-               System.out.println("Current Name: " + currentName);
-               System.out.print("Enter new Name (or Enter to keep): ");
-               newName = sc.nextLine();
-               if (newName.equals(""))
+                   row++;
+                   col = 0;
+               } 
+               else if (col < EMPLOYEE_PARAMETERS) 
                {
-                  newName = currentName;
+                   arrayEmployees[row][col] = line;
+                   col++;
                }
-               writer.write(newName);
-               writer.newLine();
-
-               // Title
-               currentTitle = reader.readLine();
-               System.out.println("Current Title: " + currentTitle);
-               System.out.print("Enter new Title (or Enter to keep): ");
-               newTitle = sc.nextLine();
-               if (newTitle.equals(""))
+           }
+       } 
+       catch (IOException e) 
+       {
+           System.out.println("Error reading employee file: " + e.getMessage());
+           return;
+       }
+   
+       // Find the employee index in arrayEmployees
+       for (int i = 0; i < MAX_SIZE; i++) 
+       {
+           if (arrayEmployees[i][0] != null && arrayEmployees[i][0].equals(inputID)) 
+           {
+               employeeIndex = i;
+               break;
+           }
+       }
+   
+       if (employeeIndex == -1) 
+       {
+           System.out.println("Employee ID not found.");
+           return;
+       }
+   
+       System.out.println("\nEditing employee: " + inputID + " (press Enter to keep current value)");
+   
+       // PIN
+       System.out.print("PIN [" + arrayEmployees[employeeIndex][1] + "]: ");
+       pin = sc.nextLine();
+       if (!pin.equals("")) 
+       {
+           arrayEmployees[employeeIndex][1] = pin;
+       }
+   
+       // Full Name
+       System.out.print("Full Name [" + arrayEmployees[employeeIndex][2] + "]: ");
+       fullName = sc.nextLine();
+       if (!fullName.equals("")) 
+       {
+           arrayEmployees[employeeIndex][2] = fullName;
+       }
+   
+       // Title
+       System.out.print("Title [" + arrayEmployees[employeeIndex][3] + "]: ");
+       title = sc.nextLine();
+       if (!title.equals("")) 
+       {
+           arrayEmployees[employeeIndex][3] = title;
+       }
+   
+       // Status is NOT editable (arrayEmployees[employeeIndex][4])
+   
+       // Write updated arrayEmployees back to file
+       try (BufferedWriter bw = new BufferedWriter(new FileWriter(EMPLOYEE))) 
+       {
+           for (int i = 0; i < MAX_SIZE; i++) 
+           {
+               if (arrayEmployees[i][0] != null && !arrayEmployees[i][0].equals("")) 
                {
-                  newTitle = currentTitle;
+                   for (int j = 0; j < EMPLOYEE_PARAMETERS; j++) 
+                   {
+                       bw.write(arrayEmployees[i][j]);
+                       bw.newLine();
+                   }
+               } 
+               else 
+               {
+                   // Write blank lines for empty employee slot
+                   for (int j = 0; j < EMPLOYEE_PARAMETERS; j++) 
+                   {
+                       bw.newLine();
+                   }
                }
-               writer.write(newTitle);
-               writer.newLine();
-
-               // Status (do not change)
-               currentStatus = reader.readLine();
-               writer.write(currentStatus);
-               writer.newLine();
-
-               // Write the boundary line ***
-               boundary = reader.readLine();
-               writer.write(boundary);
-               writer.newLine();
-            }
-            else
-            {
-               // just copy line to output
-               writer.write(line);
-               writer.newLine();
-            }
-         }
-
-         if (!found)
-         {
-            System.out.println("Employee ID not found!");
-         }
-         else
-         {
-            System.out.println("Employee details updated.");
-         }
-      }
-      catch (IOException e)
-      {
-         System.out.println("Error processing the file.");
-         e.printStackTrace();
-      }
-
-      // Replace original file with updated temp file
-      if (tempFile.exists())
-      {
-         inputFile.delete();
-         tempFile.renameTo(inputFile);
-      }
+               bw.write("***");
+               bw.newLine();
+           }
+       } 
+       catch (IOException e) 
+       {
+           System.out.println("Error writing to file: " + e.getMessage());
+           return;
+       }
+   
+       System.out.println("\nEmployee " + inputID + " updated successfully (unchanged fields preserved).");
    }
-
+      
    /*
    Name: changeEmployeeStatus
    Return Type: void
-   Parameters: String employeeID
-   Description: This method changes the status of an employee in arrayStatus
+   Parameters: String inputID
+   Description: This method changes the status of an employee in the arrayEmployees
    Change:
    */
-   public static void changeEmployeeStatus(String employeeID)
+   public static void changeEmployeeStatus(String inputID) 
    {
-      File originalFile = new File("EmployeeFile.txt");
-      File updatedFile = new File("TempEmployeeFile.txt");
-
-      // Declare variables before the loop
-      String id = "";
-      String pin = "";
-      String name = "";
-      String jobTitle = "";
-      String status = "";
-      String separator = "";
-
-      boolean found = false;
-
-      try
-      {
-         BufferedReader reader = new BufferedReader(new FileReader(originalFile));
-         BufferedWriter writer = new BufferedWriter(new FileWriter(updatedFile));
-         String line;
-
-         while ((line = reader.readLine()) != null)
-         {
-            // Use the first line as ID
-            id = line;
-            pin = reader.readLine();
-            name = reader.readLine();
-            jobTitle = reader.readLine();
-            status = reader.readLine();
-            separator = reader.readLine(); // should be ***
-
-            // If it's the employee we're updating
-            if (id.equals(employeeID))
-            {
-               System.out.println("Found employee: " + name);
-               System.out.println("Old status: " + status);
-
-               // Change the status
-               if (status.equalsIgnoreCase("Active"))
+       Scanner scanner = new Scanner(System.in);
+       int employeeIndex = -1;
+       String line;
+       int row = 0;
+       int col = 0;
+   
+       // Load current data into arrayEmployees
+       try (BufferedReader br = new BufferedReader(new FileReader(EMPLOYEE))) 
+       {
+           while ((line = br.readLine()) != null && row < MAX_SIZE) 
+           {
+               if (line.equals("***")) 
                {
-                  status = "Inactive";
-               }
-               else
+                   row++;
+                   col = 0;
+               } 
+               else if (col < EMPLOYEE_PARAMETERS) 
                {
-                  status = "Active";
+                   arrayEmployees[row][col] = line;
+                   col++;
                }
-               System.out.println("New status: " + status);
-               found = true;
-            }
-            // Write the (possibly updated) employee info to the new file
-            writer.write(id); writer.newLine();
-            writer.write(pin); writer.newLine();
-            writer.write(name); writer.newLine();
-            writer.write(jobTitle); writer.newLine();
-            writer.write(status); writer.newLine();
-            writer.write("***"); writer.newLine();
-         }
-         reader.close();
-         writer.close();
-
-         // Replace original file with updated one
-         if (originalFile.delete())
-         {
-            if (updatedFile.renameTo(originalFile))
-            {
-               System.out.println("Employee file updated successfully.");
-            }
-            else
-            {
-               System.out.println("Could not rename the updated file.");
-            }
-         }
-         else
-         {
-            System.out.println("Could not delete the original file.");
-         }
-
-         if (!found)
-         {
-            System.out.println("Employee ID " + employeeID + " not found.");
-         }
-
-      }
-      catch (IOException e)
-      {
-         System.out.println("Something went wrong: " + e.getMessage());
-      }
+           }
+       } 
+       catch (IOException e) 
+       {
+           System.out.println("Error reading employee file: " + e.getMessage());
+           return;
+       }
+   
+       // Find employee by ID
+       for (int i = 0; i < MAX_SIZE; i++) 
+       {
+           if (arrayEmployees[i][0] != null && arrayEmployees[i][0].equals(inputID)) 
+           {
+               employeeIndex = i;
+               break;
+           }
+       }
+   
+       if (employeeIndex == -1) 
+       {
+           System.out.println("Employee ID not found.");
+           return;
+       }
+   
+       String currentStatus = arrayEmployees[employeeIndex][4]; // Status in column 4
+   
+       if (currentStatus == null || currentStatus.equals("")) 
+       {
+           System.out.println("Status info missing for employee.");
+           return;
+       }
+   
+       System.out.println("Current status of employee " + inputID + ": " + currentStatus);
+   
+       if (currentStatus.equalsIgnoreCase("Inactive")) 
+       {
+           System.out.println("Cannot deactivate employee. Status is already Inactive.");
+           return;
+       }
+   
+       System.out.print("Are you sure you want to deactivate this employee? (yes/no): ");
+       String confirm = scanner.nextLine();
+   
+       if (!confirm.equalsIgnoreCase("yes")) 
+       {
+           System.out.println("Operation cancelled.");
+           return;
+       }
+   
+       // Update status
+       arrayEmployees[employeeIndex][4] = "Inactive";
+   
+       // Write changes back to the file
+       try (BufferedWriter bw = new BufferedWriter(new FileWriter(EMPLOYEE))) 
+       {
+           for (int i = 0; i < MAX_SIZE; i++) 
+           {
+               if (arrayEmployees[i][0] != null && !arrayEmployees[i][0].equals("")) 
+               {
+                   for (int j = 0; j < EMPLOYEE_PARAMETERS; j++) 
+                   {
+                       bw.write(arrayEmployees[i][j]);
+                       bw.newLine();
+                   }
+               } 
+               else 
+               {
+                   // Write blank lines for empty slot
+                   for (int j = 0; j < EMPLOYEE_PARAMETERS; j++) 
+                   {
+                       bw.newLine();
+                   }
+               }
+               bw.write("***");
+               bw.newLine();
+           }
+       } 
+       catch (IOException e) 
+       {
+           System.out.println("Error writing to file: " + e.getMessage());
+           return;
+       }
+   
+       System.out.println("Employee " + inputID + " status has been changed to Inactive.");
    }
-
+      
    /*
    Name: viewAllTransactions
    Return Type: void
@@ -971,7 +980,8 @@ public class SoftwareEngineeringTask{
    Description: This method reads the CheckoutTransactionsFile.txt, then prints all the transactions from the file
    Change:
    */
-   public static void viewAllTransactions(){
+   public static void viewAllTransactions()
+   {
       // Constant Declaration
       final int TRANSACTION_INDEX = 0;
       final int ID_INDEX = 1;
@@ -983,7 +993,8 @@ public class SoftwareEngineeringTask{
 
          //System.out.println("Transaction # | Employee ID | Items Sold | Price of Items Sold | Subtotal Cost | Taxes | Total Cost")
          //print the array (TRANSACTIONS)
-         for(int rows = 0; rows < MAX_SIZE; rows++){
+         for(int rows = 0; rows < MAX_SIZE; rows++)
+         {
             System.out.printf("Transaction #: %s\n", arrayTransactions[rows][TRANSACTION_INDEX]);
             System.out.printf("Employee ID: %s\n", arrayTransactions[rows][ID_INDEX]);
             System.out.printf("Items Sold: %s\n", arrayTransactions[rows][ITEMS_INDEX]);
@@ -994,7 +1005,7 @@ public class SoftwareEngineeringTask{
 
             System.out.println("\n");
          }
-      }
+   }
 
    /*
    Name: viewTransactions
